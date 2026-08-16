@@ -1,11 +1,3 @@
-# AI Edit Log
-
-**Instructions:** Use this document to track all your interactions with AI assistants during the project. This log will help you reflect on your AI collaboration process and demonstrate your learning journey.
-
-## How to Use This Log
-
-For each AI interaction, create a new entry with the following structure:
-
 ### Entry Template
 ```
 ## [Date] - [Brief Description]
@@ -19,76 +11,21 @@ For each AI interaction, create a new entry with the following structure:
 **Outcome:** What was the final result?
 **Lessons Learned:** What did you learn from this interaction?
 ```
-
 ---
 
-## Example Entry
-
-### 2024-01-15 - Initial Task Manager Implementation
-
-**Context:** I needed to create a basic task management system to demonstrate CRUD operations and serve as the foundation for the project.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:** "Help me create a Python class for managing tasks with basic CRUD operations. The class should handle task creation, retrieval, completion, and deletion. Include proper error handling and type hints."
-
-**AI Response:** Claude generated a TaskManager class with methods for add_task, get_task, get_all_tasks, complete_task, delete_task, and to_dict. The code included type hints, proper error handling with ValueError for missing tasks, and used datetime for timestamps.
-
-**Changes Made:**
-- Added priority field to tasks with a default value of "medium"
-- Modified the task structure to include created_at timestamp
-- Added validation for priority values
-- Renamed some variable names for clarity
-
-**Reasoning:**
-- Priority field will be useful for implementing sorting features later
-- Timestamps help with task organization and analytics
-- Input validation prevents invalid data from being stored
-- Better variable names improve code readability
-
-**Outcome:** Successfully created a robust TaskManager class that serves as the core of the application with room for future enhancements.
-
-**Lessons Learned:**
-- AI provides good starting implementations but always needs customization
-- It's important to think about future requirements when reviewing AI code
-- Type hints and error handling are crucial for maintainable code
+09/08/2026 - I want to understampt the project structure
+AI: Claude
+prompt:
+    review all files in the folder project/starter
+    create a table with the a sumary foreach file
+AI response:
+    a table with the summay of each file
 
 ---
-
-## Your Log Entries
-
-### 09/08/2026 - Understand Project Structure
-
-**Context:** Getting an overview of all files in the starter project to understand what already exists before beginning development.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
-review all files in the folder project/starter
-create a table with the a sumary foreach file
-"""
-
-**AI Response:** A table summarizing each file in the project/starter folder with brief descriptions of their purpose and content.
-
-**Changes Made:** None noted.
-
-**Reasoning:** N/A
-
-**Outcome:** Student gained a clear overview of the existing project structure.
-
-**Lessons Learned:** Reviewing the project structure before starting helps orient development and avoid duplicating existing work.
-
----
-
-### 09/08/2026 - Create Initial Architecture Planning Prompt
-
-**Context:** Generating a structured AI prompt for initial architecture planning of the Flashcard Quizzer CLI app, using lesson 5 prompt 1 as a reference.
-
-**AI Tool Used:** Gemini
-
-**Prompt/Request:**
-"""
+09/08/2026 - Start planning
+AI: gemini
+prompt:
+```
 Task: create a new prompt for Initial Architecture Planning base in the example leasson 5, prompt 1
 # Context: We need to create a Flashcard Quizzer CLI app
 ## Requerimients: We need a lightweight internal tool to help new hires memorize our server acronyms. It needs to run in the terminal, load data from JSON, and have different quiz modes. The code needs to be clean so we can extend it later.
@@ -110,28 +47,95 @@ Task: create a new prompt for Initial Architecture Planning base in the example 
 - Design Patterns: Use the Strategy Pattern for the Quiz Modes. Why? Because Sequential, Random, and Adaptive are different algorithms for the same task (selecting the next card). This allows you to easily add a "Spaced Repetition" mode later without rewriting the whole app.
 - Type Safety: All functions must have Python Type Hints.
 - Testing: The project must include a test suite (using pytest). You need at least 80% code coverage.
-"""
+```
+AI response:
+```
+<role>
+Senior Python software architect following SOLID principles and modular design
+</role>
 
-**AI Response:** A fully structured XML-formatted architecture planning prompt covering role, task, context, functional/architectural requirements, and deliverables for the Flashcard Quizzer CLI project.
+<task>
+Design a modular, extensible architecture for a CLI Flashcard Quizzer application to help new hires memorize server acronyms
+</task>
 
-**Changes Made:** None noted; the output was used as the basis for the next Claude prompt.
+<context>
+<application_type>Command-line flashcard learning and quiz tool</application_type>
+<tech_stack>Python 3.8+, JSON file storage, Python standard library, pytest for testing</tech_stack>
+<project_base>Modular structure modeled after project/starter (main.py, utils/, tests/)</project_base>
+<user_workflow>
+1. User starts the CLI app with a flashcard JSON data file (or default dataset).
+2. Application validates and loads flashcard data.
+3. User selects a quiz mode (Sequential, Random, or Adaptive).
+4. Quiz loop runs:
+   a. Display the "Front" of the card (e.g., acronym/prompt).
+   b. User enters their answer in the terminal.
+   c. System compares input against the "Back" of the card (case-insensitive).
+   d. System provides immediate feedback (Correct / Incorrect) and updates session state.
+5. Quiz session ends and displays a summary table: Total Questions, Accuracy %, and a list of missed terms.
+</user_workflow>
+</context>
 
-**Reasoning:** A well-structured prompt ensures Claude produces a thorough and actionable architecture plan.
+<requirements>
+<functional>
+- Data Ingestion:
+  * Load flashcards from JSON file (e.g., list of objects with "front" and "back" fields).
+  * Validate JSON structure and schema.
+  * Graceful error handling: If the file is missing or malformed, display a friendly, actionable error message (no raw Python stack traces).
+- Quiz Loop & Interaction:
+  * Present card Front clearly to the user in the terminal.
+  * Accept and normalize user text input.
+  * Perform case-insensitive comparison against the card Back.
+  * Provide immediate visual feedback for each answer.
+- Quiz Modes (Card Selection Algorithms):
+  * Sequential: Iterate through cards in index order (1 to N).
+  * Random: Shuffle deck and iterate through cards without immediate repeats.
+  * Adaptive (Challenge Feature): Dynamically prioritize cards the user has previously answered incorrectly.
+- Session Statistics:
+  * Track total attempts, correct answers, and incorrect answers per card.
+  * Render an end-of-session summary table with Total Questions, Accuracy %, and list of missed terms.
+</functional>
 
-**Outcome:** A reusable, detailed architecture planning prompt ready to send to Claude.
+<architectural>
+- Modular Structure & Separation of Concerns:
+  * Do not put everything in a single file.
+  * Separate data loading/validation, quiz strategies, execution/orchestration, and CLI presentation into distinct modules under utils/.
+  * Maintain clean, readable modules (under 150-200 lines per module).
+- Design Patterns:
+  * Apply the Strategy Pattern for Quiz Modes (e.g., QuizMode / CardSelectionStrategy ABC with SequentialStrategy, RandomStrategy, AdaptiveStrategy).
+  * Follow Open/Closed Principle: The core quiz engine must accept any Strategy so new modes (like "Spaced Repetition") can be added without modifying the engine.
+  * Use Dependency Injection: Pass loader and strategy dependencies into the quiz manager/engine.
+- Type Safety & Code Standards:
+  * Strict Python Type Hints on all function and method signatures across all modules.
+  * Follow PEP 8 conventions and clean docstrings.
+- Testability:
+  * Architect components to be easily decoupled and unit-tested in isolation using pytest fixtures and mocks.
+  * Plan for at least 80% test coverage.
+</architectural>
+</requirements>
 
-**Lessons Learned:** Using a reference example (lesson 5, prompt 1) helps Gemini generate consistent, high-quality prompt templates.
+<deliverables>
+Provide:
+1. High-Level Architecture:
+   - Breakdown of all modules, classes, and their distinct single responsibilities.
+2. Strategy Pattern Specification:
+   - Abstract Base Class definition for the quiz mode strategy.
+   - Interface contracts for Sequential, Random, and Adaptive strategy implementations.
+3. Module Dependency & Data Flow:
+   - Text/ASCII diagram illustrating data flow (JSON file -> Loader -> Engine/Strategy -> CLI -> Stats).
+4. Project File & Directory Structure:
+   - Full directory layout following project/starter conventions (main.py, utils/, data/, tests/, etc.).
+5. Extension Guide:
+   - Step-by-step example showing how to add a future "Spaced Repetition" strategy without changing core engine code.
+6. Testing & Coverage Strategy:
+   - Test suite breakdown for pytest (unit tests per module, strategy tests, edge case tests) designed to achieve >= 80% code coverage.
+</deliverables>
+```
 
 ---
-
-### 09/08/2026 - Design Modular Architecture (Initial Review)
-
-**Context:** Using the Gemini-generated prompt to ask Claude to design the full modular architecture for the Flashcard Quizzer CLI app and present it for review before finalizing.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
+09/08/2026 - Start planning
+AI: Claude
+prompt:
+```
 <role>
 Senior Python software architect following SOLID principles and modular design
 </role>
@@ -214,99 +218,43 @@ Provide:
    - Test suite breakdown for pytest (unit tests per module, strategy tests, edge case tests) designed to achieve >= 80% code coverage.
 7. Create a project/starter/docs/Architect.md with the result
 </deliverables>
-"""
-
-**AI Response:** Claude presented a comprehensive modular architecture covering all six deliverables—module breakdown, Strategy Pattern ABC spec, ASCII data-flow diagram, directory structure, extension guide, and test coverage strategy—and asked for approval before writing the file.
-
-**Changes Made:** None at this stage; feedback was given in follow-up prompts.
-
-**Reasoning:** The "present and ask" constraint ensured the architecture was reviewed and refined before being committed.
-
-**Outcome:** Architecture draft presented for review and iteration.
-
-**Lessons Learned:** Adding an explicit "ask me before finishing" instruction keeps the AI from prematurely finalizing artifacts, enabling collaborative refinement.
+```
 
 ---
-
-### 09/08/2026 - Refine Architecture: Implementation Order and TDD
-
-**Context:** Refining the proposed architecture to add an inside-out implementation order and a TDD mandate before approving the final document.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
+09/08/2026 - Refine architecture: implementation order + TDD
+AI: Claude
+prompt:
+```
 add a implementations section, and put the list of modulos to implement and the order. I think the first is the models, next the strategies.py, next the engine.py, etc, from the center to the externals parts
 also, we need to use TDD, always write the tests then the code
-"""
-
-**AI Response:** Proposed a 6-step inside-out implementation order (models → strategies → engine → loader → display → main) with a TDD rule stated. Asked for confirmation before writing the file.
-
-**Changes Made:** None at this step; waiting for approval.
-
-**Reasoning:** Inside-out ordering ensures core domain logic is stable before building dependent layers. TDD enforces test-first discipline.
-
-**Outcome:** Implementation order and TDD mandate added to the architecture plan, pending approval.
-
-**Lessons Learned:** Breaking architecture refinement into focused follow-up prompts produces cleaner, more targeted improvements.
+```
+AI response:
+    Proposed 6-step inside-out implementation order (models → strategies → engine → loader → display → main)
+    with TDD rule stated. Asked for confirmation before writing the file.
 
 ---
-
-### 09/08/2026 - Approve Architecture and Add JSON Schema Note
-
-**Context:** Approving the refined architecture and providing the JSON data file schema so Claude can document the data format.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
+09/08/2026 - Approve architecture + add JSON schema note
+AI: Claude
+prompt:
+```
 Yes, that order look right
 Also, in project/starter/data/aws_services.json I put a sample of file, the mandatory fields are front and back, the others fields are optionals
-"""
-
-**AI Response:** Read aws_services.json, noted mandatory fields (front, back) and optional fields (id, category, description, use_cases). Wrote docs/Architect.md with all 9 sections including Implementation Order, TDD rule, JSON Data Format, and Extension Guide.
-
-**Changes Made:** None noted beyond providing the JSON sample.
-
-**Reasoning:** Referencing the actual data file ensures the architecture document reflects the real data schema.
-
-**Outcome:** docs/Architect.md written with complete architecture, implementation order, TDD rule, and JSON format documentation.
-
-**Lessons Learned:** Pointing AI to real sample files produces more accurate and grounded documentation than describing schemas abstractly.
+```
+AI response:
+    Read aws_services.json, noted mandatory (front, back) and optional fields (id, category, description, use_cases).
+    Wrote docs/Architect.md with all 9 sections including Implementation Order, TDD rule, JSON Data Format, and Extension Guide.
 
 ---
-
-### 09/08/2026 - Log Session Prompts to Raw Log
-
-**Context:** Saving all prompts from the current planning session into ai_edit_log_raw.md for documentation purposes.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
+09/08/2026 - Log session prompts
+AI: Claude
+prompt:
+```
 write all the user prompts of this session into ai_edit_log_raw.md: preserve the current content, the process should append the prompts, review the current structure
-"""
-
-**AI Response:** Appended all session prompts to ai_edit_log_raw.md while preserving existing content and matching the file's structure.
-
-**Changes Made:** None noted.
-
-**Reasoning:** Maintaining a raw prompt log enables later documentation, reflection, and this AI edit log population task.
-
-**Outcome:** All planning session prompts preserved in ai_edit_log_raw.md.
-
-**Lessons Learned:** Logging prompts immediately after a session prevents loss of context and reduces effort when filling in formal documentation later.
-
+```
 ---
 
-### 09/08/2026 - Implement models.py
 
-**Context:** Beginning implementation of the core domain models module following the TDD-first approach defined in the architecture.
 
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 <role>
 Senior Python developer implementing planned modular architecture following SOLID principles
 </role>
@@ -330,53 +278,24 @@ Implement models.py module following the architect.md definitions
 - Follow PEP 8 style guide
 - No third-party dependencies
 </constraints>
-"""
-
-**AI Response:** Implemented models.py with Flashcard and SessionStats dataclasses, full type annotations, Google-style docstrings, REQUIRED_FIELDS constant, and _validate_card helper method, all within 120 lines using only the standard library.
-
-**Changes Made:** None noted.
-
-**Reasoning:** Following the architecture spec ensures consistency across the codebase.
-
-**Outcome:** models.py implemented as the core domain layer of the application.
-
-**Lessons Learned:** Providing explicit constraints (line limit, stdlib only, docstring style) in the prompt produces more immediately usable code.
 
 ---
 
-### 15/08/2026 - Review Project Status
-
-**Context:** Resuming the project after a break; reading all docs and source files to understand the current state before continuing implementation.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
-Task: read all the files on /docs and then read all the others folders and files, after that show me the status of the project
+15/08/2026 - resumen the project
+AI: Claude
+prompt:
+```
+Task: read all the files on /docs and then read all the others folders and files, after that show me the status of the project                                                          │
 Context: we are building a python cli apps, I want to continue with the project
 Constraints: do not alter any file, only read
-"""
 
-**AI Response:** Read all docs and source files, then produced a status report showing which modules had been implemented, which tests existed, what was pending, and the overall project health.
-
-**Changes Made:** None (read-only session).
-
-**Reasoning:** Getting a full status overview before resuming work prevents re-doing completed work and clarifies next steps.
-
-**Outcome:** Clear picture of project state; ready to continue with strategies.py implementation.
-
-**Lessons Learned:** A "read-only review" prompt is an effective way to re-orient after a break without accidentally triggering unwanted file changes.
-
+```
 ---
 
-### 15/08/2026 - Implement strategies.py
-
-**Context:** Implementing the Strategy Pattern module for quiz card selection (Sequential, Random, Adaptive), following TDD.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
+15/08/2026 - implement the stategies
+AI: Claude
+prompt:
+```
 <role>
   Senior Python developer implementing planned modular @docs/Architect.md  following SOLID principles and TDD
   </role>
@@ -403,28 +322,10 @@ Constraints: do not alter any file, only read
   - No third-party dependencies
   - If you need any clarification, always ask me
   </constraints>
-"""
-
-**AI Response:** Implemented strategies.py with CardSelectionStrategy ABC and SequentialStrategy, RandomStrategy, AdaptiveStrategy concrete classes, plus table-driven pytest test suite covering all three strategies.
-
-**Changes Made:** None noted.
-
-**Reasoning:** Using @docs/Architect.md and @docs/design_patterns.md as references ensures the implementation aligns with the approved design.
-
-**Outcome:** strategies.py and its test suite implemented following the Strategy Pattern.
-
-**Lessons Learned:** Referencing design documents directly in the prompt keeps AI implementations consistent with architectural decisions.
-
+```
 ---
 
-### 15/08/2026 - Implement engine.py
 
-**Context:** Implementing the QuizEngine orchestration module that coordinates the loader, strategy, and display components.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 <role>
 Senior Python developer implementing planned modular @docs/Architect.md following SOLID principles and TDD
 </role>
@@ -451,28 +352,8 @@ Implement engine.py module following the architect.md definitions
 - No third-party dependencies
 - If you need any clarification, always ask me
 </constraints>
-"""
-
-**AI Response:** Implemented engine.py with QuizEngine class using dependency injection for loader and strategy, plus table-driven pytest tests covering quiz flow and edge cases.
-
-**Changes Made:** None noted.
-
-**Reasoning:** Dependency injection keeps the engine decoupled from concrete implementations, enabling easy testing and future extensibility.
-
-**Outcome:** engine.py implemented as the orchestration layer with full test coverage.
-
-**Lessons Learned:** Consistent prompt templates across module implementations maintain uniform code quality and style across the codebase.
 
 ---
-
-### 15/08/2026 - Implement loader.py
-
-**Context:** Implementing the JSON flashcard data ingestion and validation module.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 <role>
 Senior Python developer implementing planned modular @docs/Architect.md following SOLID principles and TDD
 </role>
@@ -499,28 +380,7 @@ Implement loader.py module following the architect.md definitions
 - No third-party dependencies
 - If you need any clarification, always ask me
 </constraints>
-"""
-
-**AI Response:** Implemented loader.py with JSONFlashcardLoader class handling file reading, JSON parsing, schema validation, and graceful error messages, plus table-driven pytest tests covering missing files, malformed JSON, and missing required fields.
-
-**Changes Made:** None noted.
-
-**Reasoning:** Isolating all file I/O and validation in loader.py keeps the rest of the codebase free from I/O concerns.
-
-**Outcome:** loader.py implemented with robust error handling and full test suite.
-
-**Lessons Learned:** Specifying graceful error handling in the prompt (no raw stack traces) ensures the AI generates user-friendly error messages rather than bare exceptions.
-
 ---
-
-### 15/08/2026 - Implement display.py
-
-**Context:** Implementing the CLI presentation layer for rendering questions, feedback, and session statistics to the terminal.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 <role>
 Senior Python developer implementing planned modular @docs/Architect.md following SOLID principles and TDD
 </role>
@@ -547,28 +407,9 @@ Implement display.py module following the architect.md definitions
 - No third-party dependencies
 - If you need any clarification, always ask me
 </constraints>
-"""
-
-**AI Response:** Implemented display.py with CLIView class isolating all ANSI formatting, terminal output, and stats table rendering, plus pytest tests capturing stdout output.
-
-**Changes Made:** None noted.
-
-**Reasoning:** Separating all terminal rendering into display.py ensures business logic remains testable without terminal I/O concerns.
-
-**Outcome:** display.py implemented as the isolated presentation layer with tests.
-
-**Lessons Learned:** Keeping ANSI codes and terminal logic in a single module makes it easy to swap out the UI layer without touching core logic.
 
 ---
 
-### 15/08/2026 - Implement main.py, Clean Up, Run Tests and Linters
-
-**Context:** Finalizing the application by implementing main.py, removing obsolete files, running the full test suite, checking coverage, and running all linters.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 <role>
 Senior Python developer implementing planned modular @docs/Architect.md following SOLID principles and TDD
 </role>
@@ -598,52 +439,12 @@ Create a full report of the app status and the implementation
 - No third-party dependencies
 - If you need any clarification, always ask me
 </constraints>
-"""
-
-**AI Response:** Implemented main.py as the composition root wiring all components together, deleted task_manager.py and file_handler.py and removed their references, ran pytest with coverage, ran black/isort/flake8/mypy, and produced a full implementation status report.
-
-**Changes Made:** None noted beyond the requested deletions.
-
-**Reasoning:** Cleaning up obsolete files prevents confusion and keeps the codebase aligned with the agreed architecture.
-
-**Outcome:** Application fully assembled; tests passing; linters clean; implementation report generated in docs/.
-
-**Lessons Learned:** Combining implementation, cleanup, testing, and reporting in a single prompt ensures nothing is forgotten and produces a coherent end-of-phase summary.
 
 ---
-
-### 15/08/2026 - Run Black, isort, and Generate Implementation Report
-
-**Context:** Extending the previous task to explicitly include black and isort as part of the linting pipeline, and to save the implementation report to the docs folder.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 Also run black and isort as part of the linters
 after, create in the folder docs a md with the implementation report
-"""
-
-**AI Response:** Ran black and isort on all source files, confirmed all linters passed, and wrote a detailed implementation report markdown file to docs/.
-
-**Changes Made:** None noted.
-
-**Reasoning:** Explicitly naming black and isort ensures consistent formatting and import ordering are verified alongside flake8 and mypy.
-
-**Outcome:** All linters passing; implementation report saved to docs/.
-
-**Lessons Learned:** Follow-up prompts can efficiently extend a prior task without rewriting the full context.
-
 ---
 
-### 15/08/2026 - Architectural Code Review
-
-**Context:** Conducting a comprehensive architectural review of the completed codebase to identify design flaws, coupling issues, and refactoring opportunities before finalizing the project.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 <role>
 Senior Python Software Architect and Code Reviewer specializing in SOLID design principles, clean architecture, and CLI application development.
 </role>
@@ -723,28 +524,7 @@ For each identified issue:
 2. **Structural Improvements** (Extensibility, loose coupling, pattern alignment)
 3. **Polish & Quality Enhancements** (Type annotations, docstrings, constant extraction)
 </output_format>
-"""
-
-**AI Response:** Produced docs/architectural_review.md with a health scorecard, component-by-component analysis with risk levels, specific refactoring recommendations with code snippets, and a prioritized action plan.
-
-**Changes Made:** None at this stage; findings used as input for the next refactoring prompt.
-
-**Reasoning:** A structured architectural review before finalizing the project catches design issues that incremental implementation may have introduced.
-
-**Outcome:** Architectural review report saved to docs/ with prioritized findings.
-
-**Lessons Learned:** Providing a detailed review framework in the prompt ensures comprehensive, structured output rather than a generic code critique.
-
----
-
-### 15/08/2026 - Address Architectural Review Findings
-
-**Context:** Implementing all fixes identified in the architectural review and verifying tests, linters, and requirements are all met.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
+----
 <role>
 Senior Python developer, expert on SOLID principles, design patterns, TDD, and refactoring
 </role>
@@ -768,28 +548,7 @@ Senior Python developer, expert on SOLID principles, design patterns, TDD, and r
 - [ ] Typing & Docs: 100% type annotation coverage and complete Google-style docstrings.
 - [ ] Dependencies: Standard library only (no external packages in requirements beyond dev/test tools).
 </verification_checklist>
-"""
-
-**AI Response:** Reviewed and refactored the codebase to address all findings, ran tests and linters to confirm everything passed, checked each item in the verification checklist, and saved an audit report to docs/.
-
-**Changes Made:** None noted beyond the refactoring performed by AI.
-
-**Reasoning:** Using a verification checklist in the prompt ensures every review finding is explicitly confirmed as resolved.
-
-**Outcome:** All architectural review findings resolved; audit report generated in docs/.
-
-**Lessons Learned:** A checklist-driven verification prompt is more reliable than open-ended "fix the issues" requests—it produces a traceable confirmation for each item.
-
----
-
-### 15/08/2026 - Holistic Risk Assessment
-
-**Context:** Conducting a comprehensive security, reliability, and ethical/accessibility risk assessment of the completed application.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
+----
 <role>
 Senior Software Security & Reliability Engineer specializing in Python CLI applications, defensive programming, and safe software design.
 </role>
@@ -864,28 +623,7 @@ For each High/Critical risk:
 2. **P1 - Algorithmic & State Robustness** (Queue boundaries, math guards, clean interrupts)
 3. **P2 - Accessibility & Terminal UX Improvements** (Theme safety, colorblind symbols)
 </output_format>
-"""
-
-**AI Response:** Produced docs/risk_assessment.md with an executive risk summary, comprehensive risk matrix, deep dives into top risks with remediation code snippets, and a prioritized mitigation action plan.
-
-**Changes Made:** None at this stage; findings fed into the next mitigation prompt.
-
-**Reasoning:** A multi-dimensional risk assessment ensures security, reliability, and accessibility concerns are all surfaced before the project is finalized.
-
-**Outcome:** Risk assessment report saved to docs/ with prioritized findings across all three dimensions.
-
-**Lessons Learned:** Structuring the assessment framework as three explicit dimensions (Security, Reliability, Ethical) ensures no category is overlooked in the AI's analysis.
-
 ---
-
-### 15/08/2026 - Address Risk Assessment Findings
-
-**Context:** Implementing all mitigations identified in the risk assessment and verifying that security, reliability, and accessibility concerns have been resolved.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 <role>
 Senior Python developer, expert on SOLID principles, design patterns, TDD, and refactoring
 </role>
@@ -918,28 +656,7 @@ Ethical & Accessibility Verification:
 - [ ] Normalization logic (case, whitespace, punctuation) transparently documented to the user.
 - [ ] Progress metrics and local state changes explicitly communicated.
 </verification_checklist>
-"""
-
-**AI Response:** Implemented all security, reliability, and accessibility mitigations, confirmed all checklist items resolved, ran tests and linters, and generated a mitigation audit report in docs/.
-
-**Changes Made:** None noted beyond the mitigations performed by AI.
-
-**Reasoning:** A detailed verification checklist ensures every identified risk is explicitly confirmed as mitigated rather than assumed fixed.
-
-**Outcome:** All risk assessment findings mitigated; audit report generated in docs/; tests and linters passing.
-
-**Lessons Learned:** Pairing a risk assessment with a checklist-driven mitigation prompt creates a clear, auditable trail from issue identification to resolution.
-
 ---
-
-### 15/08/2026 - Generate Production-Grade README.md
-
-**Context:** Writing comprehensive user and developer documentation for the completed Flashcard Quizzer CLI project.
-
-**AI Tool Used:** Claude
-
-**Prompt/Request:**
-"""
 <role>
 Senior Technical Writer and Python Developer specializing in developer documentation, open-source documentation, and CLI user guides.
 </role>
@@ -1011,89 +728,4 @@ Structure the updated `README.md` with the following essential sections:
 <deliverable>
 Provide the complete, updated `README.md` file ready to be saved to the project root.
 </deliverable>
-"""
-
-**AI Response:** Read all project files and generated a comprehensive README.md covering all seven required sections with proper GitHub Flavored Markdown formatting, fenced code blocks, and relative documentation links.
-
-**Changes Made:** None noted.
-
-**Reasoning:** A production-grade README ensures both end users and developers can onboard to the project without needing to read the source code.
-
-**Outcome:** README.md written and saved to the project root, covering installation, usage, architecture, testing, and troubleshooting.
-
-**Lessons Learned:** Specifying both target audiences (end users and developers) in the prompt ensures the README addresses both onboarding and contribution workflows.
-
 ---
-
-## Tips for Effective AI Collaboration
-
-### 1. Be Specific in Your Requests
-- ❌ "Write a function"
-- ✅ "Write a function that validates email addresses using regex, returns a boolean, and includes proper error handling"
-
-### 2. Provide Context
-- Include relevant code snippets
-- Explain the larger goal
-- Mention any constraints or requirements
-
-### 3. Review and Understand
-- Never copy AI code without understanding it
-- Ask for explanations of complex logic
-- Test the code before accepting it
-
-### 4. Iterate and Refine
-- Use follow-up questions to improve the code
-- Ask for alternative implementations
-- Request code reviews and suggestions
-
-### 5. Document Your Process
-- Keep detailed notes in this log
-- Explain your decision-making process
-- Track what works and what doesn't
-
-## Common AI Collaboration Patterns
-
-### Code Generation
-- Initial implementation of classes/functions
-- Boilerplate code creation
-- Test case generation
-
-### Code Review
-- Ask AI to review your code for issues
-- Request suggestions for improvements
-- Get feedback on code structure
-
-### Problem Solving
-- Debugging help
-- Algorithm suggestions
-- Architecture advice
-
-### Learning and Explanation
-- Ask for explanations of complex concepts
-- Request examples of design patterns
-- Get guidance on best practices
-
-## Reflection Questions
-
-As you work through the project, consider these questions:
-
-1. **What types of tasks did AI help with most effectively?**
-2. **Where did you need to make the most modifications to AI suggestions?**
-3. **What patterns did you notice in AI strengths and weaknesses?**
-4. **How did your prompting technique improve over time?**
-5. **What would you do differently in future AI collaborations?**
-
-## Summary Statistics
-
-At the end of your project, fill out these statistics:
-
-- **Total AI interactions:** ___
-- **Lines of AI-generated code used:** ___
-- **Lines of AI-generated code modified:** ___
-- **Most helpful AI interaction:** ___
-- **Most challenging AI interaction:** ___
-- **Biggest lesson learned:** ___
-
----
-
-**Note:** This log is a required component of your final project report. Be thorough and honest in your documentation to demonstrate your learning process and AI collaboration skills.

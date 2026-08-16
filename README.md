@@ -1,218 +1,281 @@
-# AI-Assisted Development Project Starter
+# Flashcard Quizzer
 
-This is a Python project template for learning AI-assisted software development. You will build upon this foundation to create a functional application while collaborating with AI coding assistants to apply software engineering best practices including design patterns, separation of concerns, test-driven development, and comprehensive documentation.
+A CLI flashcard application for memorizing terms and acronyms. Built with Python 3.8+ and the standard library, it loads JSON decks, presents cards one by one, evaluates answers intelligently, and shows real-time session analytics.
 
-## 🚀 Getting Started
+## Features
 
-### Prerequisites
+- **Three quiz modes**: Sequential, Random, and Adaptive (Leitner-style spaced repetition)
+- **Smart answer evaluation**: Case-insensitive, whitespace-stripped comparison
+- **Session analytics**: Per-card accuracy tracking and end-of-session summary table
+- **Custom decks**: Load any JSON deck with schema validation and helpful error messages
+- **Zero dependencies**: Pure Python standard library — no pip installs needed to run
 
-- Python 3.8 or higher
-- pip (Python package manager)
-- Git
+---
 
-### Setup Instructions
+## Architecture & Design
 
-1. **Create a virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\\Scripts\\activate
-   ```
+For a full technical breakdown, see [Architecture & Technical Design](docs/Architect.md).
 
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+**Key principles:**
 
-3. **Run the application:**
-   ```bash
-   python main.py
-   ```
+- **SOLID** — each module has a single responsibility; strategies are open for extension
+- **Strategy Pattern** — `CardSelectionStrategy` ABC with `Sequential`, `Random`, and `Adaptive` implementations
+- **Layered Separation of Concerns** — `loader` → `models` → `engine` → `display`; `main.py` wires them together
+- **Red-Green-Refactor TDD** — all modules developed test-first with >80% coverage
 
-4. **Run tests:**
-   ```bash
-   python -m pytest
-   ```
+---
 
-### 🛠️ Development Tools
+## Installation & Quick Start
 
-#### Code Quality Tools
+**Prerequisites:** Python 3.8+
 
-- **Black**: Code formatter
-  ```bash
-  black .
-  ```
+```bash
+# 1. Clone the repo and enter the project directory
+git clone <repo-url>
+cd starter
 
-- **isort**: Import organizer
-  ```bash
-  isort .
-  ```
+# 2. Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
 
-- **flake8**: Linting
-  ```bash
-  flake8 .
-  ```
+# 3. Install dependencies
+pip install -r requirements.txt
 
-- **mypy**: Type checking
-  ```bash
-  mypy .
-  ```
+# 4. Run a quiz immediately with the built-in AWS deck
+python main.py
+```
 
-- **pytest**: Testing framework
-  ```bash
-  python -m pytest --cov=. --cov-report=html
-  ```
+---
 
-#### Pre-commit Hooks (Optional)
+## CLI Usage
 
-Set up pre-commit hooks for automatic code quality checks:
+```
+python main.py [--file PATH] [--mode {sequential,random,adaptive}] [--help]
+```
 
+| Argument | Default | Description |
+|---|---|---|
+| `--file PATH` | `data/aws_services.json` | Path to a flashcard JSON deck |
+| `--mode MODE` | `sequential` | Quiz mode: `sequential`, `random`, or `adaptive` |
+| `--help` | — | Show usage and exit |
+
+**Examples:**
+
+```bash
+# Default: sequential mode with the built-in deck
+python main.py
+
+# Random order
+python main.py --mode random
+
+# Adaptive mode — missed cards appear first
+python main.py --mode adaptive
+
+# Custom deck in sequential mode
+python main.py --file path/to/my_deck.json
+
+# Custom deck in random mode
+python main.py --file path/to/my_deck.json --mode random
+```
+
+**Sample session output:**
+
+```
+Loaded 60 card(s) — mode: adaptive
+
+Card 1/60
+Q: EC2
+Your answer: elastic compute cloud
+✓ Correct! (Amazon Elastic Compute Cloud)
+
+Card 2/60
+Q: S3
+Your answer: storage
+✗ Incorrect. Answer: Amazon Simple Storage Service
+
+...
+
+─────────────── Session Summary ───────────────
+Total attempted : 60
+Correct         : 47
+Accuracy        : 78.3 %
+```
+
+Press `Ctrl+C` at any time to end the session early — your partial stats are still displayed.
+
+---
+
+## Flashcard Deck Format
+
+Decks are JSON files with a top-level `"cards"` array. Each card object requires `"front"` and `"back"`; all other fields are optional.
+
+**Schema:**
+
+```json
+{
+  "cards": [
+    {
+      "id": "string (optional)",
+      "front": "string (required) — prompt shown to the user",
+      "back": "string (required) — expected answer",
+      "category": "string (optional)",
+      "description": "string (optional)"
+    }
+  ]
+}
+```
+
+**Minimal valid example:**
+
+```json
+{
+  "cards": [
+    {
+      "front": "HTML",
+      "back": "HyperText Markup Language"
+    },
+    {
+      "id": "css",
+      "front": "CSS",
+      "back": "Cascading Style Sheets",
+      "category": "Web"
+    }
+  ]
+}
+```
+
+Save the file as UTF-8 encoded JSON (`.json`) and pass it with `--file`.
+
+---
+
+## Developer & Testing Guide
+
+### Running Tests
+
+```bash
+# Run the full test suite
+pytest
+
+# Run with terminal coverage summary
+pytest --cov=utils --cov=main --cov-report=term-missing
+
+# Run with HTML coverage report (opens htmlcov/index.html)
+pytest --cov=. --cov-report=html
+
+# Run a specific test file verbosely
+pytest tests/test_strategies.py -v
+```
+
+### Test Suite Structure
+
+| File | Focus |
+|---|---|
+| `tests/test_models.py` | Unit tests for `Flashcard`, `CardStats`, `SessionStats` dataclasses |
+| `tests/test_strategies.py` | Unit tests for `Sequential`, `Random`, and `Adaptive` strategy logic |
+| `tests/test_engine.py` | Unit + integration tests for `QuizEngine` quiz loop and answer evaluation |
+| `tests/test_loader.py` | Unit tests for `FlashcardLoader` — valid decks, missing files, schema errors |
+| `tests/test_display.py` | Unit tests for `Display` prompts, feedback, and summary rendering |
+
+### Code Quality Tools
+
+```bash
+# Format code
+black .
+
+# Organize imports
+isort .
+
+# Lint
+flake8 .
+
+# Type check
+mypy main.py utils/
+
+# Run all quality checks in sequence
+black . && isort . && flake8 . && mypy main.py utils/ && pytest
+```
+
+### Pre-commit Automated Quality Gate
+
+A pre-commit configuration (`.pre-commit-config.yaml`) is included to enforce code quality, security, and test passing before any commit is accepted.
+
+**1. Install git hooks:**
 ```bash
 pre-commit install
 ```
 
-## Testing
-
-The project includes comprehensive unit tests demonstrating proper testing practices for AI-assisted development.
-
-### Tests Break Down
-
-**TaskManager Tests (`test_task_manager.py`):**
-- `test_add_task_returns_id()` - Verifies task creation returns valid ID
-- `test_get_task_by_id()` - Tests task retrieval with proper data structure
-- `test_complete_task()` - Validates task completion with timestamps
-- `test_delete_task()` - Ensures proper task deletion and error handling
-- `test_get_nonexistent_task_raises_error()` - Tests error handling for invalid IDs
-
-**FileHandler Tests (`test_file_handler.py`):**
-- `test_save_data_creates_file()` - Verifies JSON file creation and content
-- `test_load_nonexistent_file_returns_empty_dict()` - Tests graceful error handling
-- `test_file_exists()` - Validates file existence checking
-- `test_delete_file()` - Tests file cleanup functionality
-- `test_list_files()` - Verifies directory listing capabilities
-
+**2. Run manually on all files anytime:**
 ```bash
-# Run all tests
-pytest
-
-# Run with coverage report (aim for >80% coverage)
-python -m pytest --cov=. --cov-report=html
-
-# Run specific test file with verbose output
-python -m pytest tests/test_task_manager.py -v
-
-# Run all quality checks
-black . && isort . && flake8 . && mypy . && pytest
+pre-commit run --all-files
 ```
 
-## Project Instructions
+**Automated checks executed before every `git commit`:**
+- **File Hygiene**: Trims trailing whitespace, enforces single trailing newlines, validates JSON/YAML, and prevents accidental commits of files >10 MB.
+- **Formatting**: Runs `black` (88-char line limit) and `isort` (Black profile).
+- **Style & Linting**: Runs `flake8` configured via `.flake8`.
+- **Type Checking**: Runs `mypy` on `main.py` and `utils/`.
+- **Security Scanning**: Runs `bandit` AST security linter.
+- **Unit Tests & Coverage**: Runs full `pytest` test suite with `pytest-cov`.
 
-This section contains all the student deliverables for this project.
-
-### Learning Objectives
-- **AI Collaboration**: Learn to effectively work with AI assistants to generate, review, and refactor code while maintaining code quality
-- **Software Engineering**: Apply design patterns, separation of concerns, and modular architecture
-- **Test-Driven Development**: Write and maintain comprehensive unit tests with good coverage
-- **Code Quality**: Use linting, formatting, and type checking tools for professional-grade code
-- **Documentation**: Document AI interactions and development decisions throughout the process
-
-### AI-Assisted Development Workflow
-
-#### 1. Planning Phase
-- Use AI to help break down requirements into smaller, manageable tasks
-- Ask for architectural suggestions and design pattern recommendations
-- Review the `/ai_guidance/prompting_best_practices.md` for effective prompting techniques
-- Use the provided slash commands in `/.claude/commands/` for common tasks
-
-#### 2. Implementation Phase
-- Generate initial code with AI assistance using specific, contextual prompts
-- Always review and understand AI-generated code before accepting it
-- Test AI-generated code thoroughly with various inputs and edge cases
-- Refactor for clarity, maintainability, and adherence to project standards
-
-#### 3. Review Phase
-- Use AI to help identify potential issues or improvements
-- Follow the `/ai_guidance/code_review_checklist.md` for systematic code review
-- Ask for code review suggestions and alternative implementations
-- Validate that the code follows project conventions and security best practices
-
-#### 4. Documentation Phase
-- Document your AI interactions in `/docs/ai_edit_log.md` with specific examples
-- Explain your decisions and modifications to AI suggestions
-- Complete the final report using `/docs/report_template.md`
-- Update this README with new features and learnings
-
-### Assessment Criteria
-
-Your project will be evaluated on:
-
-1. **Functionality**: Does the application work as intended with proper error handling?
-2. **Code Quality**: Is the code well-structured, readable, and maintainable?
-3. **Testing**: Are there comprehensive unit tests with good coverage (>80%)?
-4. **AI Collaboration**: Did you effectively use AI assistance while maintaining code quality?
-5. **Documentation**: Are your AI interactions and decisions well-documented?
-
-### Example AI Prompts
-
-- "Help me implement a priority queue for tasks using the strategy pattern"
-- "Review this code for potential security vulnerabilities"
-- "Suggest improvements to make this code more maintainable"
-- "Help me write comprehensive unit tests for this function"
-
-### AI Guidance Resources
-
-- `/ai_guidance/prompting_best_practices.md` - Learn effective AI prompting techniques
-- `/ai_guidance/code_review_checklist.md` - Systematic approach to reviewing AI-generated code
-- `/.claude/commands/generate-function` - Generate well-structured Python functions
-- `/.claude/commands/review-code` - Get comprehensive code reviews
-- `/.claude/commands/debug-help` - Debug issues with AI assistance
-- `/.claude/commands/refactor-code` - Refactor code with design patterns
-- `/docs/design_patterns.md` - Examples of implementing design patterns with AI assistance
-
-### Project Structure
-
-```
-starter/
-├── main.py                 # Main application entry point
-├── utils/                  # Utility modules
-│   ├── __init__.py
-│   ├── task_manager.py     # Task management functionality
-│   └── file_handler.py     # File I/O operations
-├── tests/                  # Unit test suite
-│   ├── __init__.py
-│   ├── test_task_manager.py
-│   └── test_file_handler.py
-├── docs/                   # Documentation and templates
-│   ├── ai_edit_log.md      # AI interaction tracking
-│   ├── design_patterns.md  # Design pattern examples
-│   └── report_template.md  # Final report template
-├── ai_guidance/            # AI prompting best practices
-│   ├── prompting_best_practices.md
-│   └── code_review_checklist.md
-├── .claude/                # Claude-specific configuration
-│   ├── CLAUDE.md           # Claude configuration
-│   ├── commands/           # Slash commands
-│   └── mcp.json           # MCP configuration
-├── requirements.txt        # Python dependencies
-├── .editorconfig          # Code formatting rules
-└── README.md              # This file
-```
-
-## Built With
-
-* [Python](https://www.python.org/) - Core programming language
-* [pytest](https://docs.pytest.org/) - Testing framework for comprehensive unit tests
-* [pytest-cov](https://pytest-cov.readthedocs.io/) - Coverage reporting for tests
-* [Black](https://black.readthedocs.io/) - Code formatter for consistent style
-* [isort](https://pycqa.github.io/isort/) - Import organizer for clean code structure
-* [flake8](https://flake8.pycqa.org/) - Linting tool for code quality
-* [mypy](https://mypy.readthedocs.io/) - Static type checker for better code reliability
-* [pre-commit](https://pre-commit.com/) - Git hook framework for automated quality checks
-* [Claude](https://claude.ai/) - AI assistant for code generation and review
-
-## License
-
-[License](LICENSE)
+> **Note**: If any test fails or any linter reports an issue, `git commit` is automatically aborted until the issue is resolved.
 
 ---
 
-**Remember**: The goal is not just to build a working application, but to learn how to effectively collaborate with AI while maintaining high software engineering standards. Take time to understand the code, ask questions, and document your learning journey!
+## Project Structure
+
+```
+starter/
+├── main.py                     # CLI entry point: arg parsing + dependency wiring
+├── data/
+│   └── aws_services.json       # Built-in 60-card AWS services deck
+├── utils/
+│   ├── models.py               # Flashcard, CardStats, SessionStats dataclasses
+│   ├── strategies.py           # CardSelectionStrategy ABC + 3 implementations
+│   ├── engine.py               # QuizEngine: quiz loop and answer evaluation
+│   ├── loader.py               # FlashcardLoader: JSON loading and validation
+│   └── display.py              # Display: all terminal I/O
+├── tests/
+│   ├── test_models.py
+│   ├── test_strategies.py
+│   ├── test_engine.py
+│   ├── test_loader.py
+│   └── test_display.py
+├── docs/
+│   └── Architect.md            # Full architecture and design reference
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Troubleshooting & FAQ
+
+**`Error: File not found: my_deck.json`**
+The path passed to `--file` does not exist relative to your working directory. Run `python main.py --file /absolute/path/to/deck.json` or ensure you are in the correct directory.
+
+**`Error: Missing required top-level "cards" array in JSON file.`**
+Your JSON must have a root-level `"cards"` key whose value is an array. Wrap your card objects: `{ "cards": [ ... ] }`.
+
+**`Error: Card at index N is missing required field "front".`**
+Every card object must include non-empty `"front"` and `"back"` string fields. Check the card at the reported index.
+
+**`Error: Invalid JSON in deck.json: ...`**
+The file contains a JSON syntax error. Use a JSON validator (e.g. `python -m json.tool deck.json`) to locate and fix the problem.
+
+**`UnicodeDecodeError` when loading a deck**
+The loader requires UTF-8 encoding. Re-save your JSON file as UTF-8 (most editors: *Save with Encoding → UTF-8*).
+
+**`Error: File too large (N MB). Maximum allowed size is 10 MB.`**
+Decks are limited to 10 MB. Split the deck into smaller files and use `--file` to select one at a time.
+
+---
+
+## Built With
+
+- [Python](https://www.python.org/) — core language (3.8+)
+- [pytest](https://docs.pytest.org/) + [pytest-cov](https://pytest-cov.readthedocs.io/) — testing and coverage
+- [Black](https://black.readthedocs.io/) — code formatter
+- [isort](https://pycqa.github.io/isort/) — import organizer
+- [flake8](https://flake8.pycqa.org/) — linter
+- [mypy](https://mypy.readthedocs.io/) — static type checker
+- [pre-commit](https://pre-commit.com/) — git hook framework

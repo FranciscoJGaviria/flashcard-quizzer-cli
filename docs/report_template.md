@@ -1,7 +1,7 @@
 # AI-Assisted Development Project Report
 
-**Student Name:** [Your Name]  
-**Project Title:** [Your Project Title]  
+**Student Name:** [Your Name]
+**Project Title:** [Your Project Title]
 **Date:** [Submission Date]
 
 ## Executive Summary
@@ -56,11 +56,11 @@ Document 3-5 specific examples where AI assistance was particularly helpful:
 **Outcome:** What was the final result?
 
 #### Example 2: [Brief Title]
-**Context:** 
-**AI Prompt:** 
-**AI Response:** 
-**Your Changes:** 
-**Outcome:** 
+**Context:**
+**AI Prompt:**
+**AI Response:**
+**Your Changes:**
+**Outcome:**
 
 [Continue for additional examples...]
 
@@ -107,10 +107,10 @@ Explain how you organized your code:
 **Lessons Learned:** What did you learn from this experience?
 
 ### Challenge 2: [Brief Title]
-**Problem:** 
-**Solution:** 
-**AI Involvement:** 
-**Lessons Learned:** 
+**Problem:**
+**Solution:**
+**AI Involvement:**
+**Lessons Learned:**
 
 [Continue for additional challenges...]
 
@@ -194,6 +194,6 @@ List any resources that were particularly helpful during your project.
 
 ---
 
-**Total Report Length:** Aim for 2000-3000 words  
-**Due Date:** [Insert due date]  
+**Total Report Length:** Aim for 2000-3000 words
+**Due Date:** [Insert due date]
 **Submission Instructions:** [Insert submission details]

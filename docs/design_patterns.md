@@ -14,33 +14,33 @@ from typing import List, Dict, Any
 
 class SortingStrategy(ABC):
     """Abstract base class for sorting strategies."""
-    
+
     @abstractmethod
     def sort(self, tasks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         pass
 
 class PrioritySortingStrategy(SortingStrategy):
     """Sort tasks by priority."""
-    
+
     def sort(self, tasks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         priority_order = {"high": 3, "medium": 2, "low": 1}
         return sorted(tasks, key=lambda x: priority_order.get(x["priority"], 0), reverse=True)
 
 class DateSortingStrategy(SortingStrategy):
     """Sort tasks by creation date."""
-    
+
     def sort(self, tasks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         return sorted(tasks, key=lambda x: x["created_at"])
 
 class TaskSorter:
     """Context class that uses sorting strategies."""
-    
+
     def __init__(self, strategy: SortingStrategy):
         self._strategy = strategy
-    
+
     def set_strategy(self, strategy: SortingStrategy):
         self._strategy = strategy
-    
+
     def sort_tasks(self, tasks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         return self._strategy.sort(tasks)
 
@@ -73,25 +73,25 @@ from typing import Dict, Any, List
 
 class DataExporter(ABC):
     """Abstract base class for data exporters."""
-    
+
     @abstractmethod
     def export(self, data: List[Dict[str, Any]], filename: str) -> None:
         pass
 
 class JSONExporter(DataExporter):
     """Export data to JSON format."""
-    
+
     def export(self, data: List[Dict[str, Any]], filename: str) -> None:
         with open(filename, 'w') as file:
             json.dump(data, file, indent=2)
 
 class CSVExporter(DataExporter):
     """Export data to CSV format."""
-    
+
     def export(self, data: List[Dict[str, Any]], filename: str) -> None:
         if not data:
             return
-        
+
         with open(filename, 'w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=data[0].keys())
             writer.writeheader()
@@ -99,18 +99,18 @@ class CSVExporter(DataExporter):
 
 class ExporterFactory:
     """Factory class for creating data exporters."""
-    
+
     @staticmethod
     def create_exporter(format_type: str) -> DataExporter:
         exporters = {
             'json': JSONExporter,
             'csv': CSVExporter,
         }
-        
+
         exporter_class = exporters.get(format_type.lower())
         if not exporter_class:
             raise ValueError(f"Unsupported format: {format_type}")
-        
+
         return exporter_class()
 
 # Usage example
@@ -136,30 +136,30 @@ from typing import List, Dict, Any
 
 class Observer(ABC):
     """Abstract observer interface."""
-    
+
     @abstractmethod
     def update(self, subject: 'Subject', event: str, data: Dict[str, Any]) -> None:
         pass
 
 class Subject(ABC):
     """Abstract subject interface."""
-    
+
     def __init__(self):
         self._observers: List[Observer] = []
-    
+
     def attach(self, observer: Observer) -> None:
         self._observers.append(observer)
-    
+
     def detach(self, observer: Observer) -> None:
         self._observers.remove(observer)
-    
+
     def notify(self, event: str, data: Dict[str, Any]) -> None:
         for observer in self._observers:
             observer.update(self, event, data)
 
 class TaskNotifier(Observer):
     """Observer that handles task notifications."""
-    
+
     def update(self, subject: Subject, event: str, data: Dict[str, Any]) -> None:
         if event == "task_completed":
             print(f"Task '{data['description']}' has been completed!")
@@ -168,19 +168,19 @@ class TaskNotifier(Observer):
 
 class TaskLogger(Observer):
     """Observer that logs task events."""
-    
+
     def update(self, subject: Subject, event: str, data: Dict[str, Any]) -> None:
         with open('task_log.txt', 'a') as file:
             file.write(f"{event}: {data}\\n")
 
 class ObservableTaskManager(Subject):
     """Task manager that notifies observers of changes."""
-    
+
     def __init__(self):
         super().__init__()
         self._tasks: List[Dict[str, Any]] = []
         self._next_id = 1
-    
+
     def add_task(self, description: str) -> int:
         task = {
             "id": self._next_id,
@@ -189,10 +189,10 @@ class ObservableTaskManager(Subject):
         }
         self._tasks.append(task)
         self._next_id += 1
-        
+
         self.notify("task_added", task)
         return task["id"]
-    
+
     def complete_task(self, task_id: int) -> None:
         for task in self._tasks:
             if task["id"] == task_id:
@@ -229,10 +229,10 @@ from typing import Dict, Any
 
 class ConfigManager:
     """Singleton configuration manager."""
-    
+
     _instance = None
     _lock = threading.Lock()
-    
+
     def __new__(cls):
         if cls._instance is None:
             with cls._lock:
@@ -240,7 +240,7 @@ class ConfigManager:
                     cls._instance = super().__new__(cls)
                     cls._instance._initialize()
         return cls._instance
-    
+
     def _initialize(self):
         """Initialize the configuration."""
         self._config: Dict[str, Any] = {
@@ -249,15 +249,15 @@ class ConfigManager:
             "debug": False,
             "data_directory": "data"
         }
-    
+
     def get(self, key: str) -> Any:
         """Get a configuration value."""
         return self._config.get(key)
-    
+
     def set(self, key: str, value: Any) -> None:
         """Set a configuration value."""
         self._config[key] = value
-    
+
     def update(self, config: Dict[str, Any]) -> None:
         """Update multiple configuration values."""
         self._config.update(config)
@@ -292,57 +292,57 @@ from typing import List, Dict, Any
 
 class Command(ABC):
     """Abstract command interface."""
-    
+
     @abstractmethod
     def execute(self) -> None:
         pass
-    
+
     @abstractmethod
     def undo(self) -> None:
         pass
 
 class AddTaskCommand(Command):
     """Command to add a task."""
-    
+
     def __init__(self, task_manager: 'TaskManager', description: str):
         self.task_manager = task_manager
         self.description = description
         self.task_id = None
-    
+
     def execute(self) -> None:
         self.task_id = self.task_manager.add_task(self.description)
-    
+
     def undo(self) -> None:
         if self.task_id is not None:
             self.task_manager.delete_task(self.task_id)
 
 class CompleteTaskCommand(Command):
     """Command to complete a task."""
-    
+
     def __init__(self, task_manager: 'TaskManager', task_id: int):
         self.task_manager = task_manager
         self.task_id = task_id
         self.was_completed = False
-    
+
     def execute(self) -> None:
         task = self.task_manager.get_task(self.task_id)
         self.was_completed = task["completed"]
         self.task_manager.complete_task(self.task_id)
-    
+
     def undo(self) -> None:
         task = self.task_manager.get_task(self.task_id)
         task["completed"] = self.was_completed
 
 class TaskInvoker:
     """Invoker class that executes commands and maintains history."""
-    
+
     def __init__(self):
         self.command_history: List[Command] = []
-    
+
     def execute_command(self, command: Command) -> None:
         command.execute()
         self.command_history.append(command)
-    
+
     def undo_last_command(self) -> None:
         if self.command_history:
             last_command = self.command_history.pop()

@@ -1,0 +1,787 @@
+{
+  "title": "AWS Core Services Flashcards",
+  "description": "Comprehensive flashcard deck of the 60 most popular and widely used Amazon Web Services (AWS) worldwide.",
+  "total_cards": 60,
+  "cards": [
+    {
+      "id": "ec2",
+      "front": "EC2",
+      "back": "Amazon Elastic Compute Cloud",
+      "full_name": "Amazon Elastic Compute Cloud",
+      "category": "Compute",
+      "description": "Secure and resizable virtual compute capacity in the cloud. Allows users to launch virtual servers (instances) on-demand with customizable CPU, memory, storage, and networking.",
+      "use_cases": [
+        "Hosting web applications and backend APIs",
+        "Running high-performance computing (HPC) simulations",
+        "Deploying legacy enterprise applications in the cloud"
+      ]
+    },
+    {
+      "id": "s3",
+      "front": "S3",
+      "back": "Amazon Simple Storage Service",
+      "full_name": "Amazon Simple Storage Service",
+      "category": "Storage",
+      "description": "Scalable object storage service offering 99.999999999% (11 9s) of data durability. Stores and retrieves any amount of data from anywhere over the internet.",
+      "use_cases": [
+        "Hosting static websites and assets (HTML, CSS, JS, images)",
+        "Data lake storage for big data analytics",
+        "Backup, archiving, and disaster recovery data storage"
+      ]
+    },
+    {
+      "id": "rds",
+      "front": "RDS",
+      "back": "Amazon Relational Database Service",
+      "full_name": "Amazon Relational Database Service",
+      "category": "Database",
+      "description": "Managed relational database service that simplifies setup, operation, and scaling of database engines including PostgreSQL, MySQL, MariaDB, Oracle, and Microsoft SQL Server.",
+      "use_cases": [
+        "Transactional relational databases for e-commerce platforms",
+        "Enterprise ERP and CRM database backends",
+        "Multi-AZ failover configurations for high-availability production workloads"
+      ]
+    },
+    {
+      "id": "iam",
+      "front": "IAM",
+      "back": "AWS Identity and Access Management",
+      "full_name": "AWS Identity and Access Management",
+      "category": "Security, Identity & Compliance",
+      "description": "Web service that enables secure management of access to AWS services and resources. Allows creation of users, groups, roles, and granular permission policies.",
+      "use_cases": [
+        "Enforcing least-privilege access control for development teams",
+        "Granting temporary AWS credentials to EC2 instances and Lambda functions via IAM roles",
+        "Configuring multi-factor authentication (MFA) for administrative root and user access"
+      ]
+    },
+    {
+      "id": "vpc",
+      "front": "VPC",
+      "back": "Amazon Virtual Private Cloud",
+      "full_name": "Amazon Virtual Private Cloud",
+      "category": "Networking",
+      "description": "Logically isolated virtual network within AWS where you launch AWS resources. Provides complete control over IP address ranges, subnets, route tables, and network gateways.",
+      "use_cases": [
+        "Isolating multi-tier web applications into public and private subnets",
+        "Establishing secure private connections to on-premises data centers via VPN or Direct Connect",
+        "Securing backend database tiers with private subnets and security groups"
+      ]
+    },
+    {
+      "id": "lambda",
+      "front": "Lambda",
+      "back": "AWS Lambda",
+      "full_name": "AWS Lambda",
+      "category": "Compute",
+      "description": "Serverless event-driven compute service that lets you run code without provisioning or managing servers. Automatically scales from a few requests per day to thousands per second.",
+      "use_cases": [
+        "Real-time file processing upon upload to S3 (image resizing, metadata extraction)",
+        "Serverless REST API backends coupled with Amazon API Gateway",
+        "Automated scheduled administrative tasks via EventBridge triggers"
+      ]
+    },
+    {
+      "id": "ddb",
+      "front": "DynamoDB",
+      "back": "Amazon DynamoDB",
+      "full_name": "Amazon DynamoDB",
+      "category": "Database",
+      "description": "Fully managed, serverless, key-value and document NoSQL database designed for single-digit millisecond latency performance at any scale.",
+      "use_cases": [
+        "High-traffic user session stores and shopping cart state management",
+        "Gaming leaderboards and real-time player telemetry",
+        "High-throughput IoT device data collection and telemetry caching"
+      ]
+    },
+    {
+      "id": "cloudfront",
+      "front": "CloudFront",
+      "back": "Amazon CloudFront",
+      "full_name": "Amazon CloudFront",
+      "category": "Networking & Content Delivery",
+      "description": "Fast, secure Content Delivery Network (CDN) service that globally delivers data, videos, applications, and APIs to users with low latency and high transfer speeds.",
+      "use_cases": [
+        "Accelerating delivery of static and dynamic web content worldwide",
+        "Low-latency video streaming (HLS/DASH) at global scale",
+        "Edge computing and request security inspection with CloudFront Functions and AWS WAF"
+      ]
+    },
+    {
+      "id": "sqs",
+      "front": "SQS",
+      "back": "Amazon Simple Queue Service",
+      "full_name": "Amazon Simple Queue Service",
+      "category": "Application Integration",
+      "description": "Fully managed message queuing service that enables decoupling and scaling of microservices, distributed systems, and serverless applications.",
+      "use_cases": [
+        "Decoupling frontend order submission from asynchronous backend order processing",
+        "Buffering sudden traffic spikes to protect downstream databases and services",
+        "Implementing FIFO queues for strictly ordered financial and transactional tasks"
+      ]
+    },
+    {
+      "id": "sns",
+      "front": "SNS",
+      "back": "Amazon Simple Notification Service",
+      "full_name": "Amazon Simple Notification Service",
+      "category": "Application Integration",
+      "description": "Fully managed pub/sub messaging service for high-throughput, push-based many-to-many messaging between distributed systems and end-user notifications.",
+      "use_cases": [
+        "Fanout architecture broadcasting messages simultaneously to multiple SQS queues",
+        "Sending automated SMS, push notifications, and email alerts to mobile users",
+        "Publishing critical system alerts triggered by Amazon CloudWatch alarms"
+      ]
+    },
+    {
+      "id": "ecs",
+      "front": "ECS",
+      "back": "Amazon Elastic Container Service",
+      "full_name": "Amazon Elastic Container Service",
+      "category": "Containers",
+      "description": "Highly scalable and fast container management service that makes it easy to run, stop, and manage Docker containers on a cluster using EC2 or AWS Fargate.",
+      "use_cases": [
+        "Running containerized microservices architectures with deep AWS integrations",
+        "Executing containerized batch processing jobs with AWS Batch",
+        "Simplifying legacy monolithic application container migrations"
+      ]
+    },
+    {
+      "id": "eks",
+      "front": "EKS",
+      "back": "Amazon Elastic Kubernetes Service",
+      "full_name": "Amazon Elastic Kubernetes Service",
+      "category": "Containers",
+      "description": "Managed Kubernetes service to run Kubernetes on AWS and on-premises without needing to install and operate your own Kubernetes control plane or nodes.",
+      "use_cases": [
+        "Deploying enterprise cloud-native Kubernetes workloads with standard open-source tooling",
+        "Hybrid cloud deployments consistent across AWS and on-premises environments",
+        "Running large-scale distributed AI/ML training clusters on Kubernetes"
+      ]
+    },
+    {
+      "id": "ecr",
+      "front": "ECR",
+      "back": "Amazon Elastic Container Registry",
+      "full_name": "Amazon Elastic Container Registry",
+      "category": "Containers",
+      "description": "Fully managed container image registry making it easy for developers to store, manage, share, and deploy Docker container images securely.",
+      "use_cases": [
+        "Centralized private registry for microservice container images across development pipelines",
+        "Automated vulnerability scanning of container images on push",
+        "Geo-replicated container image caching across multiple AWS regions"
+      ]
+    },
+    {
+      "id": "ebs",
+      "front": "EBS",
+      "back": "Amazon Elastic Block Store",
+      "full_name": "Amazon Elastic Block Store",
+      "category": "Storage",
+      "description": "High-performance block-storage service designed for use with Amazon EC2 for both throughput and transaction-intensive workloads at any scale.",
+      "use_cases": [
+        "Persistent primary boot and data volumes for EC2 virtual instances",
+        "High-IOPS storage for self-hosted databases (PostgreSQL, MySQL, Cassandra)",
+        "Point-in-time automated volume snapshots stored durably in Amazon S3"
+      ]
+    },
+    {
+      "id": "efs",
+      "front": "EFS",
+      "back": "Amazon Elastic File System",
+      "full_name": "Amazon Elastic File System",
+      "category": "Storage",
+      "description": "Simple, serverless, set-and-forget elastic file system allowing shared access to file storage from hundreds of EC2 instances, containers, and Lambda functions concurrently.",
+      "use_cases": [
+        "Shared media and content storage for distributed web content management systems (WordPress, Drupal)",
+        "Shared home directories for developer workspaces and data science notebook servers",
+        "Multi-container persistent shared file systems in Amazon ECS and EKS"
+      ]
+    },
+    {
+      "id": "elb",
+      "front": "ELB",
+      "back": "Elastic Load Balancing",
+      "full_name": "Elastic Load Balancing",
+      "category": "Networking",
+      "description": "Automatically distributes incoming application traffic across multiple targets (EC2 instances, containers, IP addresses, and Lambda functions) in one or more Availability Zones.",
+      "use_cases": [
+        "Distributing web traffic across redundant application servers to achieve fault tolerance",
+        "Enforcing SSL/TLS termination and certificate management at the network perimeter",
+        "Automated health checks routing traffic only to healthy compute targets"
+      ]
+    },
+    {
+      "id": "alb",
+      "front": "ALB",
+      "back": "Application Load Balancer",
+      "full_name": "Application Load Balancer",
+      "category": "Networking",
+      "description": "Layer 7 load balancer that routes HTTP and HTTPS traffic based on advanced request attributes such as URL path, host headers, query parameters, and HTTP methods.",
+      "use_cases": [
+        "Path-based routing directing /api to microservices and /static to frontend clusters",
+        "Host-based routing hosting multiple domain names on a single load balancer",
+        "Integrating with AWS WAF for real-time application security filtering"
+      ]
+    },
+    {
+      "id": "nlb",
+      "front": "NLB",
+      "back": "Network Load Balancer",
+      "full_name": "Network Load Balancer",
+      "category": "Networking",
+      "description": "Ultra high-performance Layer 4 load balancer capable of handling millions of requests per second while maintaining ultra-low latencies and supporting static IP addresses.",
+      "use_cases": [
+        "Load balancing non-HTTP protocols such as TCP, UDP, and TLS connections",
+        "High-throughput gaming servers and live streaming protocols",
+        "Exposing private services via AWS PrivateLink with static Anycast IP addresses"
+      ]
+    },
+    {
+      "id": "asg",
+      "front": "ASG",
+      "back": "Auto Scaling Group",
+      "full_name": "Auto Scaling Group",
+      "category": "Compute",
+      "description": "Collection of Amazon EC2 instances treated as a logical grouping for automatic scaling, management, and health replacement according to demand policies.",
+      "use_cases": [
+        "Dynamically scaling EC2 instance fleet up during peak traffic and down during quiet hours",
+        "Maintaining a constant minimum fleet size by automatically replacing failed instances",
+        "Cost optimization by blending Spot Instances and On-Demand instances"
+      ]
+    },
+    {
+      "id": "route53",
+      "front": "Route 53",
+      "back": "Amazon Route 53",
+      "full_name": "Amazon Route 53",
+      "category": "Networking",
+      "description": "Highly available and scalable cloud Domain Name System (DNS) web service designed to route end users to internet applications and manage public/private domain records.",
+      "use_cases": [
+        "Domain registration and DNS record management with 100% availability SLA",
+        "Latency-based, geolocation, and weighted DNS routing for multi-region applications",
+        "DNS failover routing traffic away from unhealthy endpoints based on health checks"
+      ]
+    },
+    {
+      "id": "apigw",
+      "front": "API Gateway",
+      "back": "Amazon API Gateway",
+      "full_name": "Amazon API Gateway",
+      "category": "Networking & Application Integration",
+      "description": "Fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure REST, HTTP, and WebSocket APIs at any scale.",
+      "use_cases": [
+        "Serverless REST API frontend proxying requests to AWS Lambda backend functions",
+        "Real-time bidirectional communication backends using WebSockets (chat, live notifications)",
+        "API monetization with API keys, usage plans, throttling, and OAuth/Cognito authentication"
+      ]
+    },
+    {
+      "id": "cloudwatch",
+      "front": "CloudWatch",
+      "back": "Amazon CloudWatch",
+      "full_name": "Amazon CloudWatch",
+      "category": "Management & Governance",
+      "description": "Monitoring and observability service built for DevOps engineers, developers, site reliability engineers (SREs), and IT managers to collect metrics, logs, and trace data.",
+      "use_cases": [
+        "Collecting and querying centralized application and system log streams",
+        "Triggering automated alarms on high CPU or memory thresholds to activate Auto Scaling",
+        "Building real-time operational dashboards for cloud infrastructure health"
+      ]
+    },
+    {
+      "id": "cloudtrail",
+      "front": "CloudTrail",
+      "back": "AWS CloudTrail",
+      "full_name": "AWS CloudTrail",
+      "category": "Management & Governance",
+      "description": "Service that enables governance, compliance, operational auditing, and risk auditing of your AWS account by recording every API call and user action across the account.",
+      "use_cases": [
+        "Security forensics and auditing identifying who made specific resource modifications",
+        "Compliance reporting demonstrating regulatory adherence (SOC 2, ISO 27001, HIPAA)",
+        "Detecting unauthorized or anomalous IAM credential usage patterns"
+      ]
+    },
+    {
+      "id": "kms",
+      "front": "KMS",
+      "back": "AWS Key Management Service",
+      "full_name": "AWS Key Management Service",
+      "category": "Security, Identity & Compliance",
+      "description": "Managed service that makes it easy for you to create and control cryptographic keys used to encrypt data across AWS services and within your applications.",
+      "use_cases": [
+        "Server-side encryption for S3 buckets, EBS volumes, RDS databases, and DynamoDB tables",
+        "Application-level envelope encryption for sensitive customer PII",
+        "Hardware security module (HSM) backed FIPS 140-2 Level 3 key protection"
+      ]
+    },
+    {
+      "id": "waf",
+      "front": "WAF",
+      "back": "AWS Web Application Firewall",
+      "full_name": "AWS Web Application Firewall",
+      "category": "Security, Identity & Compliance",
+      "description": "Web application firewall that helps protect web applications and APIs from common web exploits (SQL injection, XSS) and bots that could affect availability or compromise security.",
+      "use_cases": [
+        "Blocking SQL injection and Cross-Site Scripting (XSS) attacks on ALB and CloudFront",
+        "Rate-limiting malicious IP addresses performing brute-force and DDoS attacks",
+        "Enforcing AWS Managed Rules for common CVE vulnerabilities and bot control"
+      ]
+    },
+    {
+      "id": "asm",
+      "front": "Secrets Manager",
+      "back": "AWS Secrets Manager",
+      "full_name": "AWS Secrets Manager",
+      "category": "Security, Identity & Compliance",
+      "description": "Service that helps you protect secrets needed to access applications, services, and IT resources. Easily rotate, manage, and retrieve database credentials, API keys, and other secrets.",
+      "use_cases": [
+        "Securely retrieving database passwords in Lambda and EC2 without hardcoding",
+        "Automated scheduled rotation of RDS database credentials with zero application downtime",
+        "Centrally managing third-party SaaS API keys across multiple microservices"
+      ]
+    },
+    {
+      "id": "acm",
+      "front": "ACM",
+      "back": "AWS Certificate Manager",
+      "full_name": "AWS Certificate Manager",
+      "category": "Security, Identity & Compliance",
+      "description": "Service that lets you easily provision, manage, and deploy public and private SSL/TLS certificates for use with AWS services and internal connected resources.",
+      "use_cases": [
+        "Provisioning free public SSL/TLS certificates for CloudFront distributions and ALBs",
+        "Automating annual SSL certificate renewals with zero administrative effort",
+        "Issuing private CA certificates for internal microservice-to-microservice mTLS encryption"
+      ]
+    },
+    {
+      "id": "cognito",
+      "front": "Cognito",
+      "back": "Amazon Cognito",
+      "full_name": "Amazon Cognito",
+      "category": "Security, Identity & Compliance",
+      "description": "Customer identity and access management (CIAM) service providing user sign-up, sign-in, and access control for web and mobile applications with support for social and enterprise IdPs.",
+      "use_cases": [
+        "User directory management with User Pools for user sign-up and authentication",
+        "Federating authentication with Google, Apple, Facebook, and SAML 2.0 / OIDC identity providers",
+        "Exchanging identity tokens for temporary scoped AWS credentials via Cognito Identity Pools"
+      ]
+    },
+    {
+      "id": "guardduty",
+      "front": "GuardDuty",
+      "back": "Amazon GuardDuty",
+      "full_name": "Amazon GuardDuty",
+      "category": "Security, Identity & Compliance",
+      "description": "Intelligent threat detection service that continuously monitors your AWS accounts, workloads, and data for malicious activity and unauthorized behavior using machine learning.",
+      "use_cases": [
+        "Detecting compromised EC2 instances involved in cryptocurrency mining or botnets",
+        "Identifying compromised IAM credentials performing anomalous API operations",
+        "Monitoring S3 bucket access logs for unusual data exfiltration patterns"
+      ]
+    },
+    {
+      "id": "securityhub",
+      "front": "Security Hub",
+      "back": "AWS Security Hub",
+      "full_name": "AWS Security Hub",
+      "category": "Security, Identity & Compliance",
+      "description": "Cloud security posture management service that aggregates, organizes, and prioritizes security alerts and findings from multiple AWS services and third-party tools.",
+      "use_cases": [
+        "Single pane of glass dashboard for security findings across all AWS accounts",
+        "Automated compliance checks against CIS AWS Foundations Benchmark and PCI DSS",
+        "Triggering automated remediation workflows via EventBridge on high-severity findings"
+      ]
+    },
+    {
+      "id": "cfn",
+      "front": "CloudFormation",
+      "back": "AWS CloudFormation",
+      "full_name": "AWS CloudFormation",
+      "category": "Developer Tools & IaC",
+      "description": "Infrastructure as Code (IaC) service that allows you to model, provision, and manage AWS and third-party resources using declarative JSON or YAML configuration templates.",
+      "use_cases": [
+        "Automating repeatable multi-region infrastructure provisioning through templates",
+        "Managing infrastructure lifecycle with change sets, drift detection, and automated rollbacks",
+        "Defining complete application stacks in code alongside source repositories"
+      ]
+    },
+    {
+      "id": "cdk",
+      "front": "CDK",
+      "back": "AWS Cloud Development Kit",
+      "full_name": "AWS Cloud Development Kit",
+      "category": "Developer Tools & IaC",
+      "description": "Open-source software development framework to define cloud infrastructure in familiar programming languages (TypeScript, Python, Java, C#, Go) which synthesizes into CloudFormation.",
+      "use_cases": [
+        "Writing type-safe infrastructure as code using modern object-oriented patterns",
+        "Building reusable organizational infrastructure construct libraries",
+        "Simplifying serverless application definitions with high-level L2/L3 constructs"
+      ]
+    },
+    {
+      "id": "sfn",
+      "front": "Step Functions",
+      "back": "AWS Step Functions",
+      "full_name": "AWS Step Functions",
+      "category": "Application Integration",
+      "description": "Visual serverless workflow orchestration service that lets developers construct multi-step workflows linking distributed services, Lambda functions, and human approvals.",
+      "use_cases": [
+        "Orchestrating multi-step e-commerce checkout workflows with retries and compensation logic",
+        "Automating complex ETL data pipelines coordinating Glue, EMR, and Athena",
+        "Building long-running business processes requiring manual human review steps"
+      ]
+    },
+    {
+      "id": "eventbridge",
+      "front": "EventBridge",
+      "back": "Amazon EventBridge",
+      "full_name": "Amazon EventBridge",
+      "category": "Application Integration",
+      "description": "Serverless event bus service that makes it easy to connect applications using data from your own applications, integrated SaaS applications, and AWS services.",
+      "use_cases": [
+        "Event-driven microservice decoupling using custom event buses and schema registry",
+        "Ingesting and reacting to webhook events from third-party SaaS tools (Datadog, Zendesk, Stripe)",
+        "Automating infrastructure reactions to AWS resource state changes"
+      ]
+    },
+    {
+      "id": "ses",
+      "front": "SES",
+      "back": "Amazon Simple Email Service",
+      "full_name": "Amazon Simple Email Service",
+      "category": "Application Integration",
+      "description": "Cost-effective, flexible, and scalable email service that enables developers to send transactional, marketing, or mass email communications reliably.",
+      "use_cases": [
+        "Sending automated transactional emails (order confirmations, password reset links)",
+        "High-volume marketing newsletters with sender reputation management and bounce tracking",
+        "Receiving incoming emails and triggering automated S3 or Lambda processing"
+      ]
+    },
+    {
+      "id": "redshift",
+      "front": "Redshift",
+      "back": "Amazon Redshift",
+      "full_name": "Amazon Redshift",
+      "category": "Analytics",
+      "description": "Fast, fully managed, petabyte-scale cloud data warehouse service that makes it simple and cost-effective to analyze all your data using standard SQL and existing BI tools.",
+      "use_cases": [
+        "Enterprise business intelligence reporting and historical data warehousing",
+        "Querying structured and semi-structured data across data lakes with Redshift Spectrum",
+        "Real-time operational analytics on streaming data feeds"
+      ]
+    },
+    {
+      "id": "athena",
+      "front": "Athena",
+      "back": "Amazon Athena",
+      "full_name": "Amazon Athena",
+      "category": "Analytics",
+      "description": "Serverless interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL without needing to set up or manage infrastructure.",
+      "use_cases": [
+        "Ad-hoc SQL querying of VPC Flow Logs, CloudTrail audit logs, and ALB access logs in S3",
+        "Running quick analytical queries on S3 data lakes without provisioning data warehouses",
+        "Querying geospatial data stored in CSV, JSON, ORC, Avro, or Parquet formats"
+      ]
+    },
+    {
+      "id": "glue",
+      "front": "Glue",
+      "back": "AWS Glue",
+      "full_name": "AWS Glue",
+      "category": "Analytics",
+      "description": "Serverless data integration service that makes it easy to discover, prepare, move, and integrate data from multiple sources for analytics, machine learning, and application development.",
+      "use_cases": [
+        "Automated schema discovery and central metadata storage in AWS Glue Data Catalog",
+        "Visual and code-based ETL data transformation jobs powered by Apache Spark",
+        "Data cleaning and normalization pipelines feeding S3 data lakes and Redshift"
+      ]
+    },
+    {
+      "id": "emr",
+      "front": "EMR",
+      "back": "Amazon Elastic MapReduce",
+      "full_name": "Amazon Elastic MapReduce",
+      "category": "Analytics",
+      "description": "Cloud big data platform for processing vast amounts of data quickly and cost-effectively using open source tools like Apache Spark, Hadoop, Hive, Presto, and HBase.",
+      "use_cases": [
+        "Large-scale big data processing and transformations on petabyte datasets",
+        "Distributed machine learning model training using Apache Spark MLlib",
+        "Financial risk modeling and genomic data sequence analysis"
+      ]
+    },
+    {
+      "id": "kds",
+      "front": "KDS",
+      "back": "Amazon Kinesis Data Streams",
+      "full_name": "Amazon Kinesis Data Streams",
+      "category": "Analytics",
+      "description": "Scalable and durable real-time data streaming service that continuously captures gigabytes of data per second from hundreds of thousands of sources.",
+      "use_cases": [
+        "Real-time application log and clickstream event ingestion",
+        "High-throughput IoT device sensor telemetry streaming",
+        "Real-time anomaly detection and fraud analysis pipelines"
+      ]
+    },
+    {
+      "id": "kdf",
+      "front": "KDF",
+      "back": "Amazon Kinesis Data Firehose",
+      "full_name": "Amazon Kinesis Data Firehose",
+      "category": "Analytics",
+      "description": "Fully managed service for reliably loading streaming data into data lakes, data stores, and analytics services like Amazon S3, Redshift, and OpenSearch without custom code.",
+      "use_cases": [
+        "Streaming real-time server logs directly into Amazon S3 with automated format conversion (to Parquet)",
+        "Continuous ingestion of event streams into Amazon OpenSearch for live dashboards",
+        "Real-time micro-batch data ingestion into Amazon Redshift data warehouses"
+      ]
+    },
+    {
+      "id": "msk",
+      "front": "MSK",
+      "back": "Amazon Managed Streaming for Apache Kafka",
+      "full_name": "Amazon Managed Streaming for Apache Kafka",
+      "category": "Analytics",
+      "description": "Fully managed service that makes it easy for you to build and run applications that use Apache Kafka to process streaming data without managing Kafka infrastructure.",
+      "use_cases": [
+        "Running enterprise Kafka streaming applications with native AWS IAM and VPC security",
+        "Event-sourcing architectures with strict partitioning and ordering guarantees",
+        "Streaming change data capture (CDC) pipelines between microservices"
+      ]
+    },
+    {
+      "id": "aos",
+      "front": "OpenSearch",
+      "back": "Amazon OpenSearch Service",
+      "full_name": "Amazon OpenSearch Service",
+      "category": "Analytics",
+      "description": "Managed service that makes it easy to deploy, operate, and scale OpenSearch (and legacy Elasticsearch) clusters for interactive log analytics, real-time application monitoring, and search.",
+      "use_cases": [
+        "Full-text search engines for e-commerce product catalogs and enterprise search",
+        "Real-time application log indexing and visualization via OpenSearch Dashboards",
+        "Security Information and Event Management (SIEM) log analytics"
+      ]
+    },
+    {
+      "id": "ssm",
+      "front": "SSM",
+      "back": "AWS Systems Manager",
+      "full_name": "AWS Systems Manager",
+      "category": "Management & Governance",
+      "description": "Operations hub for AWS and hybrid cloud that provides a unified user interface to view operational data from multiple AWS services and automate operational tasks.",
+      "use_cases": [
+        "Secure interactive shell access to EC2 instances without opening SSH ports via Session Manager",
+        "Centralized configuration parameter and secret storage via SSM Parameter Store",
+        "Automated patch management and software inventory across hybrid server fleets"
+      ]
+    },
+    {
+      "id": "config",
+      "front": "Config",
+      "back": "AWS Config",
+      "full_name": "AWS Config",
+      "category": "Management & Governance",
+      "description": "Service that enables you to assess, audit, and evaluate the configurations of your AWS resources continuously, tracking changes against defined compliance rules.",
+      "use_cases": [
+        "Auditing compliance with security baselines (e.g., verifying all S3 buckets block public access)",
+        "Tracking complete configuration history and resource relationships for change management",
+        "Automated remediation of non-compliant resources (e.g., auto-enabling encryption)"
+      ]
+    },
+    {
+      "id": "tgw",
+      "front": "TGW",
+      "back": "AWS Transit Gateway",
+      "full_name": "AWS Transit Gateway",
+      "category": "Networking",
+      "description": "Network transit hub that connects thousands of Virtual Private Clouds (VPCs) and on-premises networks through a central hub, eliminating complex peering relationships.",
+      "use_cases": [
+        "Centralizing network connectivity across hundreds of corporate AWS accounts and VPCs",
+        "Simplifying hub-and-spoke connectivity between cloud environments and on-premises data centers",
+        "Routing all outbound internet traffic through centralized security inspection VPCs"
+      ]
+    },
+    {
+      "id": "dx",
+      "front": "DX",
+      "back": "AWS Direct Connect",
+      "full_name": "AWS Direct Connect",
+      "category": "Networking",
+      "description": "Cloud service solution that makes it easy to establish a dedicated, private network connection from your premises to AWS, bypassing the public internet.",
+      "use_cases": [
+        "High-bandwidth, low-latency private connectivity for hybrid enterprise workloads",
+        "Transferring massive datasets (terabytes to petabytes) reliably and cost-effectively",
+        "Complying with strict regulatory requirements mandating private, non-internet transport"
+      ]
+    },
+    {
+      "id": "natgw",
+      "front": "NAT Gateway",
+      "back": "Network Address Translation Gateway",
+      "full_name": "AWS NAT Gateway",
+      "category": "Networking",
+      "description": "Managed service that enables instances in a private subnet to connect to the internet or other AWS services, but prevents the internet from initiating a connection with those instances.",
+      "use_cases": [
+        "Allowing backend database and application servers in private subnets to download OS security patches",
+        "Outbound API calls to external third-party payment gateways from private compute instances",
+        "High-availability managed NAT across multiple Availability Zones without managing EC2 NAT instances"
+      ]
+    },
+    {
+      "id": "igw",
+      "front": "IGW",
+      "back": "Internet Gateway",
+      "full_name": "AWS Internet Gateway",
+      "category": "Networking",
+      "description": "Horizontally scaled, redundant, and highly available VPC component that allows communication between your VPC and the internet with no availability risks or bandwidth constraints.",
+      "use_cases": [
+        "Providing internet access to public subnets and public load balancers",
+        "Performing IPv4 network address translation (NAT) for instances with public IP addresses",
+        "Enabling direct bidirectional IPv6 communication with the global internet"
+      ]
+    },
+    {
+      "id": "vgw",
+      "front": "VGW",
+      "back": "Virtual Private Gateway",
+      "full_name": "AWS Virtual Private Gateway",
+      "category": "Networking",
+      "description": "The VPN concentrator on the Amazon side of the Site-to-Site VPN connection attached to your VPC to route traffic between your VPC and on-premises networks.",
+      "use_cases": [
+        "Terminating IPsec Site-to-Site VPN tunnels from corporate branch offices to a VPC",
+        "Attaching to AWS Direct Connect private virtual interfaces for on-premises connectivity",
+        "Enabling encrypted hybrid cloud data communication"
+      ]
+    },
+    {
+      "id": "cgw",
+      "front": "CGW",
+      "back": "Customer Gateway",
+      "full_name": "AWS Customer Gateway",
+      "category": "Networking",
+      "description": "An AWS resource that provides information to AWS about your customer gateway device, which is a physical device or software application on your side of a Site-to-Site VPN connection.",
+      "use_cases": [
+        "Registering corporate on-premises firewall or router IP addresses in AWS for VPN peering",
+        "Configuring BGP dynamic routing between on-premises routers and AWS VPCs",
+        "Establishing redundant VPN connections across dual on-premises hardware routers"
+      ]
+    },
+    {
+      "id": "eip",
+      "front": "EIP",
+      "back": "Elastic IP Address",
+      "full_name": "Elastic IP Address",
+      "category": "Networking",
+      "description": "Static, public IPv4 address designed for dynamic cloud computing that you can allocate to your account and quickly remap to any instance or network interface in your VPC.",
+      "use_cases": [
+        "Maintaining a consistent public IP address for allowlisting by external partner firewalls",
+        "Rapid failover masking instance failures by immediately remapping the public IP to a standby instance",
+        "Providing fixed egress IP addresses for NAT Gateways"
+      ]
+    },
+    {
+      "id": "eni",
+      "front": "ENI",
+      "back": "Elastic Network Interface",
+      "full_name": "Elastic Network Interface",
+      "category": "Networking",
+      "description": "Logical networking component in a VPC that represents a virtual network card with private and public IP addresses, MAC address, and attached security groups.",
+      "use_cases": [
+        "Creating multi-homed EC2 instances connected to multiple subnets or security tiers",
+        "Attaching dedicated management network interfaces to virtual firewall appliances",
+        "Preserving IP configurations during high-availability standby failover events"
+      ]
+    },
+    {
+      "id": "dms",
+      "front": "DMS",
+      "back": "AWS Database Migration Service",
+      "full_name": "AWS Database Migration Service",
+      "category": "Migration & Transfer",
+      "description": "Cloud service that makes it easy to migrate relational databases, data warehouses, NoSQL databases, and other types of data stores to AWS with minimal application downtime.",
+      "use_cases": [
+        "Migrating on-premises Oracle and SQL Server databases to Amazon Aurora with continuous replication",
+        "Heterogeneous database migrations converting schemas using AWS Schema Conversion Tool (SCT)",
+        "Continuous Change Data Capture (CDC) streaming database transactions into Amazon S3 data lakes"
+      ]
+    },
+    {
+      "id": "elasticbeanstalk",
+      "front": "Elastic Beanstalk",
+      "back": "AWS Elastic Beanstalk",
+      "full_name": "AWS Elastic Beanstalk",
+      "category": "Compute & PaaS",
+      "description": "Platform as a Service (PaaS) for deploying and scaling web applications and services developed with Java, .NET, PHP, Node.js, Python, Ruby, Go, and Docker on familiar servers.",
+      "use_cases": [
+        "Rapidly deploying web applications by simply uploading code while AWS handles capacity, load balancing, and scaling",
+        "Running standard Docker containers with zero infrastructure management overhead",
+        "Automated blue/green deployment orchestration for production web apps"
+      ]
+    },
+    {
+      "id": "fargate",
+      "front": "Fargate",
+      "back": "AWS Fargate",
+      "full_name": "AWS Fargate",
+      "category": "Compute & Containers",
+      "description": "Serverless compute engine for containers that works with both Amazon ECS and Amazon EKS, removing the need to provision, configure, or scale clusters of virtual machines.",
+      "use_cases": [
+        "Running containerized microservices without managing EC2 instance infrastructure",
+        "On-demand batch container workloads with instant compute provisioning and per-second billing",
+        "Isolating container workloads in dedicated kernel-level security boundaries"
+      ]
+    },
+    {
+      "id": "macie",
+      "front": "Macie",
+      "back": "Amazon Macie",
+      "full_name": "Amazon Macie",
+      "category": "Security, Identity & Compliance",
+      "description": "Data security and data privacy service that uses machine learning and pattern matching to discover and protect sensitive data (PII, credentials, financial records) in Amazon S3.",
+      "use_cases": [
+        "Scanning petabytes of S3 bucket data for unencrypted Personally Identifiable Information (PII)",
+        "Identifying inadvertently publicly accessible S3 buckets containing sensitive customer data",
+        "Automating compliance verification for GDPR, HIPAA, and financial regulations"
+      ]
+    },
+    {
+      "id": "costexplorer",
+      "front": "Cost Explorer",
+      "back": "AWS Cost Explorer",
+      "full_name": "AWS Cost Explorer",
+      "category": "Cost Management",
+      "description": "Visual tool that enables you to view and analyze your AWS costs and usage over time, build customized reports, and forecast future cloud spending.",
+      "use_cases": [
+        "Analyzing monthly cloud spending trends broken down by service, region, and custom cost allocation tags",
+        "Forecasting future infrastructure expenses for corporate budget planning",
+        "Identifying underutilized resources and evaluating Savings Plans and Reserved Instance coverage"
+      ]
+    },
+    {
+      "id": "globalaccelerator",
+      "front": "Global Accelerator",
+      "back": "AWS Global Accelerator",
+      "full_name": "AWS Global Accelerator",
+      "category": "Networking",
+      "description": "Networking service that improves the availability and performance of applications with local or global users using AWS's global network infrastructure and Anycast IP addresses.",
+      "use_cases": [
+        "Accelerating TCP and UDP traffic for multiplayer gaming and live media feeds globally",
+        "Instant failover routing traffic between multi-region endpoints in under 30 seconds",
+        "Providing static Anycast IP addresses to prevent DNS caching issues on client devices"
+      ]
+    },
+    {
+      "id": "qldb",
+      "front": "QLDB",
+      "back": "Amazon Quantum Ledger Database",
+      "full_name": "Amazon Quantum Ledger Database",
+      "category": "Database",
+      "description": "Fully managed ledger database providing a transparent, immutable, and cryptographically verifiable transaction log owned by a central trusted authority.",
+      "use_cases": [
+        "Tracking complete immutable financial transaction histories with cryptographic verification",
+        "Supply chain provenance tracking recording full history of custody changes",
+        "Regulatory compliance systems requiring tamper-proof audit trails"
+      ]
+    }
+  ]
+}
