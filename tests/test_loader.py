@@ -152,6 +152,14 @@ class TestFlashcardLoaderFileErrors:
             with pytest.raises(FlashcardFileError, match="[Ll]arge"):
                 FlashcardLoader().load(path)
 
+    def test_directory_path_raises_flashcard_file_error(self, tmp_path):
+        with pytest.raises(FlashcardFileError, match="[Dd]irectory"):
+            FlashcardLoader().load(str(tmp_path))
+
+    def test_root_directory_raises_flashcard_file_error(self):
+        with pytest.raises(FlashcardFileError, match="[Dd]irectory"):
+            FlashcardLoader().load("/")
+
 
 class TestFlashcardLoaderSchemaErrors:
     def test_missing_cards_key_raises_flashcard_load_error(self, tmp_path):

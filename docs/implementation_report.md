@@ -77,18 +77,23 @@ Implements the **Strategy Pattern** as specified in the architecture.
 
 `QuizEngine` orchestrates the quiz loop with **no direct terminal access**.
 All I/O is delegated to the injected `Display` instance (**Dependency Injection**).
+Supports per-round isolated metrics while accepting `previous_stats: Optional[SessionStats] = None` for adaptive card ordering across rounds.
 
 ```
-run():
-  ordered = strategy.select(cards, stats)
+run(previous_stats=None):
+  history = previous_stats if previous_stats is not None else SessionStats()
+  ordered = strategy.select(cards, history)
+  round_stats = SessionStats()
   for card in ordered:
     display.show_prompt(card.front)
     answer = display.get_input()
+    if answer is None:
+      break
     is_correct = answer.strip().lower() == card.back.strip().lower()
     display.show_feedback(is_correct, card.back)
-    _update_stats(stats, card, is_correct)
-  display.show_summary(stats)
-  return stats
+    _update_stats(round_stats, card, is_correct)
+  display.show_summary(round_stats)
+  return round_stats
 ```
 
 Answer evaluation: **case-insensitive + whitespace-stripped**.
@@ -102,13 +107,13 @@ Answer evaluation: **case-insensitive + whitespace-stripped**.
 | Method | Responsibility |
 |---|---|
 | `load(path)` | Public entry point — orchestrates the pipeline |
-| `_read_file(path)` | Reads raw text; raises `FlashcardLoadError` if missing |
-| `_parse_json(raw, path)` | Decodes JSON; raises `FlashcardLoadError` on syntax error |
+| `_read_file(path)` | Reads raw text; handles missing files, directories, size limits, permission errors |
+| `_parse_json(raw, path)` | Decodes JSON; raises `FlashcardSchemaError` on syntax error |
 | `_extract_cards_list(data)` | Validates `"cards"` key exists and is a list |
 | `_validate_card(card, index)` | Validates each card dict has non-empty `front` and `back` |
 
 `REQUIRED_FIELDS = ("front", "back")` class constant.
-`FlashcardLoadError` custom exception — no raw Python tracebacks exposed.
+`FlashcardLoadError` custom exception hierarchy — no raw Python tracebacks exposed.
 
 ---
 
@@ -116,14 +121,16 @@ Answer evaluation: **case-insensitive + whitespace-stripped**.
 
 Single class handling all `print()` / `input()` calls.
 
-| Method | Output |
+| Method | Output / Purpose |
 |---|---|
 | `show_prompt(front)` | `Card: {front}` |
 | `get_input()` | `input("Your answer: ")` |
 | `show_feedback(True, answer)` | `✓ Correct!` |
 | `show_feedback(False, answer)` | `✗ Incorrect. The correct answer is: {answer}` |
 | `show_summary(stats)` | Table: Total Questions, Correct, Accuracy %, Missed Terms |
+| `show_info(message)` | Informational banner |
 | `show_error(message)` | `Error: {message}` |
+| `ask_continue(prompt)` | `Play another round? (y/n): ` — returns bool |
 
 ---
 
@@ -260,3 +267,15 @@ To add a **Spaced Repetition** mode (zero changes to engine/display/loader):
 4. Add tests to `tests/test_strategies.py`
 
 This satisfies the **Open/Closed Principle**.
+
+---
+
+## 11. Related Documentation & Audits
+
+- [Final Project Report](report_template.md) — Comprehensive AI-assisted project report
+- [Architectural Code Review](architectural_review.md) — Detailed inspection of architecture, SOLID principles, and quality standards
+- [Risk Assessment](risk_assessment.md) — Holistic evaluation of technical and security risks
+- [Refactoring Audit](refactoring_audit.md) — Log of refactoring iterations and code review checklist validations
+- [Risk Mitigation Audit](risk_mitigation_audit.md) — Verification of implemented risk mitigation controls
+- [Architecture Specification](Architect.md) — Architecture reference and design decisions
+- [AI Interaction Log](ai_edit_log.md) — Complete AI prompt history and decision records

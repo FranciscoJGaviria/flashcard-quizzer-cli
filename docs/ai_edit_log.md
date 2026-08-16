@@ -64,10 +64,10 @@ For each AI interaction, create a new entry with the following structure:
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 review all files in the folder project/starter
 create a table with the a sumary foreach file
-"""
+```
 
 **AI Response:** A table summarizing each file in the project/starter folder with brief descriptions of their purpose and content.
 
@@ -88,7 +88,7 @@ create a table with the a sumary foreach file
 **AI Tool Used:** Gemini
 
 **Prompt/Request:**
-"""
+```
 Task: create a new prompt for Initial Architecture Planning base in the example leasson 5, prompt 1
 # Context: We need to create a Flashcard Quizzer CLI app
 ## Requerimients: We need a lightweight internal tool to help new hires memorize our server acronyms. It needs to run in the terminal, load data from JSON, and have different quiz modes. The code needs to be clean so we can extend it later.
@@ -110,7 +110,7 @@ Task: create a new prompt for Initial Architecture Planning base in the example 
 - Design Patterns: Use the Strategy Pattern for the Quiz Modes. Why? Because Sequential, Random, and Adaptive are different algorithms for the same task (selecting the next card). This allows you to easily add a "Spaced Repetition" mode later without rewriting the whole app.
 - Type Safety: All functions must have Python Type Hints.
 - Testing: The project must include a test suite (using pytest). You need at least 80% code coverage.
-"""
+```
 
 **AI Response:** A fully structured XML-formatted architecture planning prompt covering role, task, context, functional/architectural requirements, and deliverables for the Flashcard Quizzer CLI project.
 
@@ -131,7 +131,7 @@ Task: create a new prompt for Initial Architecture Planning base in the example 
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python software architect following SOLID principles and modular design
 </role>
@@ -214,7 +214,7 @@ Provide:
    - Test suite breakdown for pytest (unit tests per module, strategy tests, edge case tests) designed to achieve >= 80% code coverage.
 7. Create a project/starter/docs/Architect.md with the result
 </deliverables>
-"""
+```
 
 **AI Response:** Claude presented a comprehensive modular architecture covering all six deliverables—module breakdown, Strategy Pattern ABC spec, ASCII data-flow diagram, directory structure, extension guide, and test coverage strategy—and asked for approval before writing the file.
 
@@ -235,10 +235,10 @@ Provide:
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 add a implementations section, and put the list of modulos to implement and the order. I think the first is the models, next the strategies.py, next the engine.py, etc, from the center to the externals parts
 also, we need to use TDD, always write the tests then the code
-"""
+```
 
 **AI Response:** Proposed a 6-step inside-out implementation order (models → strategies → engine → loader → display → main) with a TDD rule stated. Asked for confirmation before writing the file.
 
@@ -259,10 +259,10 @@ also, we need to use TDD, always write the tests then the code
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 Yes, that order look right
 Also, in project/starter/data/aws_services.json I put a sample of file, the mandatory fields are front and back, the others fields are optionals
-"""
+```
 
 **AI Response:** Read aws_services.json, noted mandatory fields (front, back) and optional fields (id, category, description, use_cases). Wrote docs/Architect.md with all 9 sections including Implementation Order, TDD rule, JSON Data Format, and Extension Guide.
 
@@ -283,9 +283,9 @@ Also, in project/starter/data/aws_services.json I put a sample of file, the mand
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 write all the user prompts of this session into ai_edit_log_raw.md: preserve the current content, the process should append the prompts, review the current structure
-"""
+```
 
 **AI Response:** Appended all session prompts to ai_edit_log_raw.md while preserving existing content and matching the file's structure.
 
@@ -306,7 +306,7 @@ write all the user prompts of this session into ai_edit_log_raw.md: preserve the
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python developer implementing planned modular architecture following SOLID principles
 </role>
@@ -330,7 +330,7 @@ Implement models.py module following the architect.md definitions
 - Follow PEP 8 style guide
 - No third-party dependencies
 </constraints>
-"""
+```
 
 **AI Response:** Implemented models.py with Flashcard and SessionStats dataclasses, full type annotations, Google-style docstrings, REQUIRED_FIELDS constant, and _validate_card helper method, all within 120 lines using only the standard library.
 
@@ -351,11 +351,11 @@ Implement models.py module following the architect.md definitions
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 Task: read all the files on /docs and then read all the others folders and files, after that show me the status of the project
 Context: we are building a python cli apps, I want to continue with the project
 Constraints: do not alter any file, only read
-"""
+```
 
 **AI Response:** Read all docs and source files, then produced a status report showing which modules had been implemented, which tests existed, what was pending, and the overall project health.
 
@@ -376,7 +376,7 @@ Constraints: do not alter any file, only read
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
   Senior Python developer implementing planned modular @docs/Architect.md  following SOLID principles and TDD
   </role>
@@ -403,7 +403,7 @@ Constraints: do not alter any file, only read
   - No third-party dependencies
   - If you need any clarification, always ask me
   </constraints>
-"""
+```
 
 **AI Response:** Implemented strategies.py with CardSelectionStrategy ABC and SequentialStrategy, RandomStrategy, AdaptiveStrategy concrete classes, plus table-driven pytest test suite covering all three strategies.
 
@@ -424,7 +424,7 @@ Constraints: do not alter any file, only read
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python developer implementing planned modular @docs/Architect.md following SOLID principles and TDD
 </role>
@@ -451,7 +451,7 @@ Implement engine.py module following the architect.md definitions
 - No third-party dependencies
 - If you need any clarification, always ask me
 </constraints>
-"""
+```
 
 **AI Response:** Implemented engine.py with QuizEngine class using dependency injection for loader and strategy, plus table-driven pytest tests covering quiz flow and edge cases.
 
@@ -472,7 +472,7 @@ Implement engine.py module following the architect.md definitions
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python developer implementing planned modular @docs/Architect.md following SOLID principles and TDD
 </role>
@@ -499,7 +499,7 @@ Implement loader.py module following the architect.md definitions
 - No third-party dependencies
 - If you need any clarification, always ask me
 </constraints>
-"""
+```
 
 **AI Response:** Implemented loader.py with JSONFlashcardLoader class handling file reading, JSON parsing, schema validation, and graceful error messages, plus table-driven pytest tests covering missing files, malformed JSON, and missing required fields.
 
@@ -520,7 +520,7 @@ Implement loader.py module following the architect.md definitions
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python developer implementing planned modular @docs/Architect.md following SOLID principles and TDD
 </role>
@@ -547,7 +547,7 @@ Implement display.py module following the architect.md definitions
 - No third-party dependencies
 - If you need any clarification, always ask me
 </constraints>
-"""
+```
 
 **AI Response:** Implemented display.py with CLIView class isolating all ANSI formatting, terminal output, and stats table rendering, plus pytest tests capturing stdout output.
 
@@ -568,7 +568,7 @@ Implement display.py module following the architect.md definitions
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python developer implementing planned modular @docs/Architect.md following SOLID principles and TDD
 </role>
@@ -598,7 +598,7 @@ Create a full report of the app status and the implementation
 - No third-party dependencies
 - If you need any clarification, always ask me
 </constraints>
-"""
+```
 
 **AI Response:** Implemented main.py as the composition root wiring all components together, deleted task_manager.py and file_handler.py and removed their references, ran pytest with coverage, ran black/isort/flake8/mypy, and produced a full implementation status report.
 
@@ -619,10 +619,10 @@ Create a full report of the app status and the implementation
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 Also run black and isort as part of the linters
 after, create in the folder docs a md with the implementation report
-"""
+```
 
 **AI Response:** Ran black and isort on all source files, confirmed all linters passed, and wrote a detailed implementation report markdown file to docs/.
 
@@ -643,7 +643,7 @@ after, create in the folder docs a md with the implementation report
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python Software Architect and Code Reviewer specializing in SOLID design principles, clean architecture, and CLI application development.
 </role>
@@ -723,7 +723,7 @@ For each identified issue:
 2. **Structural Improvements** (Extensibility, loose coupling, pattern alignment)
 3. **Polish & Quality Enhancements** (Type annotations, docstrings, constant extraction)
 </output_format>
-"""
+```
 
 **AI Response:** Produced docs/architectural_review.md with a health scorecard, component-by-component analysis with risk levels, specific refactoring recommendations with code snippets, and a prioritized action plan.
 
@@ -744,7 +744,7 @@ For each identified issue:
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python developer, expert on SOLID principles, design patterns, TDD, and refactoring
 </role>
@@ -768,7 +768,7 @@ Senior Python developer, expert on SOLID principles, design patterns, TDD, and r
 - [ ] Typing & Docs: 100% type annotation coverage and complete Google-style docstrings.
 - [ ] Dependencies: Standard library only (no external packages in requirements beyond dev/test tools).
 </verification_checklist>
-"""
+```
 
 **AI Response:** Reviewed and refactored the codebase to address all findings, ran tests and linters to confirm everything passed, checked each item in the verification checklist, and saved an audit report to docs/.
 
@@ -789,7 +789,7 @@ Senior Python developer, expert on SOLID principles, design patterns, TDD, and r
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Software Security & Reliability Engineer specializing in Python CLI applications, defensive programming, and safe software design.
 </role>
@@ -864,7 +864,7 @@ For each High/Critical risk:
 2. **P1 - Algorithmic & State Robustness** (Queue boundaries, math guards, clean interrupts)
 3. **P2 - Accessibility & Terminal UX Improvements** (Theme safety, colorblind symbols)
 </output_format>
-"""
+```
 
 **AI Response:** Produced docs/risk_assessment.md with an executive risk summary, comprehensive risk matrix, deep dives into top risks with remediation code snippets, and a prioritized mitigation action plan.
 
@@ -885,7 +885,7 @@ For each High/Critical risk:
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Python developer, expert on SOLID principles, design patterns, TDD, and refactoring
 </role>
@@ -918,7 +918,7 @@ Ethical & Accessibility Verification:
 - [ ] Normalization logic (case, whitespace, punctuation) transparently documented to the user.
 - [ ] Progress metrics and local state changes explicitly communicated.
 </verification_checklist>
-"""
+```
 
 **AI Response:** Implemented all security, reliability, and accessibility mitigations, confirmed all checklist items resolved, ran tests and linters, and generated a mitigation audit report in docs/.
 
@@ -939,7 +939,7 @@ Ethical & Accessibility Verification:
 **AI Tool Used:** Claude
 
 **Prompt/Request:**
-"""
+```
 <role>
 Senior Technical Writer and Python Developer specializing in developer documentation, open-source documentation, and CLI user guides.
 </role>
@@ -1011,7 +1011,7 @@ Structure the updated `README.md` with the following essential sections:
 <deliverable>
 Provide the complete, updated `README.md` file ready to be saved to the project root.
 </deliverable>
-"""
+```
 
 **AI Response:** Read all project files and generated a comprehensive README.md covering all seven required sections with proper GitHub Flavored Markdown formatting, fenced code blocks, and relative documentation links.
 

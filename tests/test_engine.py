@@ -237,3 +237,130 @@ class TestQuizEngineEOFAndInterrupt:
             QuizEngine(cards, SequentialStrategy(), display).run()
         assert len(captured_stats) == 1
         assert captured_stats[0].total_attempts == 1
+
+
+class TestQuizEngineMultiRound:
+    def test_run_summary_shows_only_current_round_stats(self):
+        cards = make_cards([("EC2", "Elastic Compute Cloud")])
+        display = make_display(["elastic compute cloud", "elastic compute cloud"])
+        engine = QuizEngine(cards, SequentialStrategy(), display)
+
+        # Round 1
+        r1_stats = engine.run()
+        assert r1_stats.total_attempts == 1
+        assert r1_stats.total_correct == 1
+
+        # Round 2 with previous stats passed for ordering
+        r2_stats = engine.run(previous_stats=r1_stats)
+        assert r2_stats.total_attempts == 1
+        assert r2_stats.total_correct == 1
+
+    def test_adaptive_mode_multi_round_ordering_and_isolated_summaries(self):
+        from utils.strategies import AdaptiveStrategy
+
+        cards = make_cards(
+            [
+                ("pacho", "francisco"),
+                ("mochi", "olga"),
+                ("hijo", "martin"),
+                ("bebe", "Victoria o Samuel"),
+            ]
+        )
+        prompt_order = []
+        summaries = []
+        display = MagicMock()
+        display.show_prompt.side_effect = lambda front: prompt_order.append(front)
+        display.show_summary.side_effect = lambda s: summaries.append(s)
+
+        engine = QuizEngine(cards, AdaptiveStrategy(), display)
+
+        # --- Round 1: miss pacho and bebe ---
+        display.get_input.side_effect = [
+            "wrong",
+            "olga",
+            "martin",
+            "wrong",
+        ]
+        prompt_order.clear()
+        r1_stats = engine.run(previous_stats=None)
+        assert prompt_order == ["pacho", "mochi", "hijo", "bebe"]
+        assert r1_stats.total_attempts == 4
+        assert r1_stats.total_correct == 2
+        assert [c.front for c in r1_stats.missed_cards] == ["pacho", "bebe"]
+        assert summaries[-1].total_attempts == 4
+
+        # --- Round 2: pass r1_stats -> pacho and bebe first ---
+        # User gets pacho and bebe right, but misses hijo
+        display.get_input.side_effect = [
+            "francisco",
+            "Victoria o Samuel",
+            "olga",
+            "wrong",
+        ]
+        prompt_order.clear()
+        r2_stats = engine.run(previous_stats=r1_stats)
+        assert prompt_order[:2] == ["pacho", "bebe"]
+        assert r2_stats.total_attempts == 4
+        assert r2_stats.total_correct == 3
+        assert [c.front for c in r2_stats.missed_cards] == ["hijo"]
+        assert summaries[-1].total_attempts == 4
+        assert summaries[-1].accuracy == 75.0
+
+        # --- Round 3: pass r2_stats -> hijo first ---
+        # User gets all 4 right!
+        display.get_input.side_effect = [
+            "martin",
+            "francisco",
+            "olga",
+            "Victoria o Samuel",
+        ]
+        prompt_order.clear()
+        r3_stats = engine.run(previous_stats=r2_stats)
+        assert prompt_order[0] == "hijo"
+        assert r3_stats.total_attempts == 4
+        assert r3_stats.total_correct == 4
+        assert r3_stats.missed_cards == []
+        assert summaries[-1].total_attempts == 4
+        assert summaries[-1].accuracy == 100.0
+
+
+class TestMainLoop:
+    def test_main_single_round_exit(self, monkeypatch):
+        from main import main
+
+        monkeypatch.setattr(
+            "utils.display.Display.get_input", lambda self: "some answer"
+        )
+        monkeypatch.setattr(
+            "utils.display.Display.ask_continue", lambda self, prompt="": False
+        )
+        exit_code = main(["--file", "data/aws_services.json", "--mode", "sequential"])
+        assert exit_code == 0
+
+    def test_main_multi_round_loop(self, monkeypatch):
+        from main import main
+
+        rounds = [True, False]
+        monkeypatch.setattr(
+            "utils.display.Display.get_input", lambda self: "some answer"
+        )
+        monkeypatch.setattr(
+            "utils.display.Display.ask_continue",
+            lambda self, prompt="": rounds.pop(0),
+        )
+        exit_code = main(["--file", "data/aws_services.json", "--mode", "adaptive"])
+        assert exit_code == 0
+        assert len(rounds) == 0
+
+    def test_main_keyboard_interrupt_during_ask_continue(self, monkeypatch):
+        from main import main
+
+        def raise_interrupt(self, prompt=""):
+            raise KeyboardInterrupt
+
+        monkeypatch.setattr(
+            "utils.display.Display.get_input", lambda self: "some answer"
+        )
+        monkeypatch.setattr("utils.display.Display.ask_continue", raise_interrupt)
+        exit_code = main(["--file", "data/aws_services.json", "--mode", "sequential"])
+        assert exit_code == 130

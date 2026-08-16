@@ -87,26 +87,17 @@ class CardSelectionStrategy(ABC):
     ┌────────────────────────────────────────┐
     │  1. parse args (file path, mode)       │
     │  2. FlashcardLoader.load(path)         │──► loader.py  (validates JSON)
-    │  3. strategy = StrategyFactory(mode)   │──► strategies.py
-    │  4. engine = QuizEngine(cards,         │
+    │  3. strategy = build_strategy(mode)    │──► strategies.py
+    │  4. last_stats = None                  │
+    │  5. engine = QuizEngine(cards,         │
     │              strategy, display)        │
-    └──────────────┬─────────────────────────┘
-                   │
-                   ▼
-              engine.py
-    ┌────────────────────────────────────────┐
-    │  ordered = strategy.select(cards,      │
-    │                            stats)      │
-    │  for card in ordered:                  │
-    │    display.show_prompt(card.front)     │──► display.py
-    │    answer = display.get_input()        │◄── display.py
-    │    evaluate answer (case-insensitive)  │
-    │    display.show_feedback(is_correct)   │──► display.py
-    │    update SessionStats                 │
-    └──────────────┬─────────────────────────┘
-                   │
-                   ▼
-         display.show_summary(stats)         ──► display.py
+    │  6. while True:                        │
+    │       last_stats =                     │
+    │         engine.run(                    │──► engine.py (isolated round_stats)
+    │           previous_stats=last_stats)   │
+    │       if not display.ask_continue():   │──► display.py
+    │           break                        │
+    └────────────────────────────────────────┘
 ```
 
 ---
@@ -157,19 +148,23 @@ class QuizEngine:
         self,
         cards: List[Flashcard],
         strategy: CardSelectionStrategy,
-        display: "Display",
+        display: "DisplayProtocol",
     ) -> None: ...
 
-    def run(self) -> SessionStats: ...
+    def run(
+        self, previous_stats: Optional[SessionStats] = None
+    ) -> SessionStats: ...
 
 
 # utils/display.py
 class Display:
     def show_prompt(self, front: str) -> None: ...
-    def get_input(self) -> str: ...
+    def get_input(self) -> Optional[str]: ...
     def show_feedback(self, is_correct: bool, correct_answer: str) -> None: ...
     def show_summary(self, stats: SessionStats) -> None: ...
     def show_error(self, message: str) -> None: ...
+    def show_info(self, message: str) -> None: ...
+    def ask_continue(self, prompt: str = "Play another round? (y/n): ") -> bool: ...
 ```
 
 ---
@@ -203,32 +198,7 @@ Each step follows the TDD cycle: **write tests first → implement until all tes
 |---|---|---|---|---|
 | 1 | `models.py` | `test_models.py` | nothing | Pure data; no external dependencies |
 | 2 | `strategies.py` | `test_strategies.py` | `models` | Algorithms only; isolated from I/O |
-| 3 | `<role>
-  Senior Python developer implementing planned modular @docs/Architect.md  following SOLID principles and TDD
-  </role>
-
-  <task>
-  Implement strategies.py module following the architect.md definitions
-  </task>
-
-  <requirements>
-  <code_quality>
-  - Full type annotations throughout
-  - Google-style docstrings with Args, Returns, Raises
-  - Define REQUIRED_FIELDS = ('front', 'back') as class constant
-  - Private helper method _validate_card(card: Dict[str, Any], index: int)
-  - Module under 120 lines
-  - Clear tests, build table-driven test suites using pytest
-  - Use @docs/design_patterns.md  as reference
-  </code_quality>
-  </requirements>
-
-  <constraints>
-  - Python standard library only (json, pathlib, typing)
-  - Follow PEP 8 style guide
-  - No third-party dependencies
-  - If you need any clarification, always ask me
-  </constraints>` | `test_engine.py` | `models`, `strategies` | Core logic; I/O injected via `Display` mock |
+| 3 | `test_engine.py` | `models`, `strategies` | Core logic; I/O injected via `Display` mock |
 | 4 | `loader.py` | `test_loader.py` | `models` | I/O boundary; file system interaction |
 | 5 | `display.py` | `test_display.py` | `models` | Terminal I/O boundary; captured in tests |
 | 6 | `main.py` | manual / integration | all modules | Wiring layer; tested end-to-end manually |

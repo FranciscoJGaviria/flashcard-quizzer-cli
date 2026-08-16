@@ -14,6 +14,7 @@ from typing import Dict, List, Optional, Type
 from utils.display import Display
 from utils.engine import QuizEngine
 from utils.loader import FlashcardLoader, FlashcardLoadError
+from utils.models import SessionStats
 from utils.strategies import (
     AdaptiveStrategy,
     CardSelectionStrategy,
@@ -81,6 +82,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     """Application entry point.
 
     Parses CLI arguments, loads cards, wires dependencies, and runs the quiz.
+    Supports interactive multi-round sessions until the user decides to exit.
     Handles KeyboardInterrupt (Ctrl+C) with a clean exit message.
 
     Args:
@@ -105,8 +107,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     strategy = build_strategy(args.mode)
     display.show_info(f"Loaded {len(cards)} card(s) — mode: {args.mode}")
 
+    last_stats: Optional[SessionStats] = None
+    engine = QuizEngine(cards, strategy, display)
     try:
-        QuizEngine(cards, strategy, display).run()
+        while True:
+            last_stats = engine.run(previous_stats=last_stats)
+            if not display.ask_continue():
+                break
     except KeyboardInterrupt:
         print("\n\n[Quiz interrupted. Goodbye!]")
         return 130

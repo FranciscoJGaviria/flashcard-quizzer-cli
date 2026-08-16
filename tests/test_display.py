@@ -243,3 +243,30 @@ class TestSafePrint:
             side_effect=[UnicodeEncodeError("utf-8", "", 0, 1, ""), None],
         ):
             _safe_print("✓")
+
+
+class TestAskContinue:
+    @pytest.mark.parametrize("user_input", ["y", "yes", "Y", "YES", "  y  ", "  yes  "])
+    def test_ask_continue_truthy_inputs(self, user_input: str):
+        with patch("builtins.input", return_value=user_input):
+            assert Display().ask_continue() is True
+
+    @pytest.mark.parametrize(
+        "user_input", ["n", "no", "N", "NO", "nope", "maybe", "123"]
+    )
+    def test_ask_continue_falsy_inputs(self, user_input: str):
+        with patch("builtins.input", return_value=user_input):
+            assert Display().ask_continue() is False
+
+    def test_ask_continue_empty_string(self):
+        with patch("builtins.input", return_value=""):
+            assert Display().ask_continue() is False
+
+    def test_ask_continue_eof_error(self):
+        with patch("builtins.input", side_effect=EOFError):
+            assert Display().ask_continue() is False
+
+    def test_ask_continue_custom_prompt(self):
+        with patch("builtins.input", return_value="y") as mock_input:
+            Display().ask_continue("Custom prompt? ")
+            mock_input.assert_called_once_with("Custom prompt? ")

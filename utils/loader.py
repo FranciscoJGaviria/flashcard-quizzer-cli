@@ -20,8 +20,8 @@ class FlashcardLoadError(Exception):
 class FlashcardFileError(FlashcardLoadError):
     """Raised when the flashcard file cannot be accessed.
 
-    Covers: file not found, permission denied, file too large, and other
-    I/O errors.
+    Covers: file not found, permission denied, file too large, directory
+    passed instead of file, and other I/O errors.
     """
 
 
@@ -63,7 +63,7 @@ class FlashcardLoader:
 
         Raises:
             FlashcardFileError: If the file is missing, cannot be read, or
-                exceeds the maximum allowed size.
+                exceeds the maximum allowed file size.
             FlashcardSchemaError: If JSON is invalid or any card fails
                 schema validation.
         """
@@ -90,6 +90,10 @@ class FlashcardLoader:
                 or exceeds the maximum allowed file size.
         """
         resolved = Path(path).resolve()
+        if resolved.is_dir():
+            raise FlashcardFileError(
+                f"Is a directory: {resolved.name or str(resolved)}"
+            )
         try:
             size = resolved.stat().st_size
             if size > _MAX_FILE_BYTES:
@@ -100,6 +104,10 @@ class FlashcardLoader:
             return resolved.read_text(encoding="utf-8")
         except FileNotFoundError:
             raise FlashcardFileError(f"File not found: {resolved.name}") from None
+        except IsADirectoryError:
+            raise FlashcardFileError(
+                f"Is a directory: {resolved.name or str(resolved)}"
+            ) from None
         except PermissionError as exc:
             raise FlashcardFileError(
                 f"Permission denied reading {resolved.name}"

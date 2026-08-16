@@ -75,6 +75,10 @@ class DisplayProtocol(Protocol):
         """Show a user-friendly error message."""
         ...
 
+    def ask_continue(self, prompt: str = "Play another round? (y/n): ") -> bool:
+        """Prompt the user to continue the quiz session."""
+        ...
+
 
 class Display:
     """Handles all terminal I/O: prompts, feedback, summary table, and errors.
@@ -177,3 +181,20 @@ class Display:
             message: The error description to display.
         """
         _safe_print(f"Error: {message}")
+
+    def ask_continue(self, prompt: str = "Play another round? (y/n): ") -> bool:
+        """Prompt the user to decide whether to continue the quiz.
+
+        Args:
+            prompt: Question displayed to the user. Defaults to
+                ``"Play another round? (y/n): "``.
+
+        Returns:
+            True if user entered 'y' or 'yes' (case-insensitive, whitespace
+            stripped), False otherwise or on EOF.
+        """
+        try:
+            raw = input(prompt)
+            return raw.strip().lower() in ("y", "yes")
+        except EOFError:
+            return False

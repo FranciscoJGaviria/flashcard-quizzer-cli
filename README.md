@@ -12,9 +12,18 @@ A CLI flashcard application for memorizing terms and acronyms. Built with Python
 
 ---
 
-## Architecture & Design
+## Architecture & Documentation
 
-For a full technical breakdown, see [Architecture & Technical Design](docs/Architect.md).
+Comprehensive architectural design, implementation reports, and quality audits are available in the `docs/` directory:
+
+- [Architecture & Technical Design](docs/Architect.md) — System architecture, SOLID principles, and Strategy Pattern design
+- [Final Project Report](docs/report_template.md) — Official AI-assisted development project report and reflection
+- [Implementation Report](docs/implementation_report.md) — Module-by-module implementation, TDD workflow, and test metrics
+- [Architectural Code Review](docs/architectural_review.md) — Rigorous inspection of code quality, boundaries, and coupling
+- [Risk Assessment](docs/risk_assessment.md) — Holistic evaluation of security, reliability, performance, and maintainability risks
+- [Refactoring Audit](docs/refactoring_audit.md) — Detailed log of refactoring iterations and checklist validations
+- [Risk Mitigation Audit](docs/risk_mitigation_audit.md) — Verification of risk mitigation controls across all modules
+- [AI Interaction Log](docs/ai_edit_log.md) — Full prompt history, decision records, and lessons learned
 
 **Key principles:**
 
@@ -31,8 +40,8 @@ For a full technical breakdown, see [Architecture & Technical Design](docs/Archi
 
 ```bash
 # 1. Clone the repo and enter the project directory
-git clone <repo-url>
-cd starter
+git clone git@github.com:FranciscoJGaviria/flashcard-quizzer-cli.git
+cd flashcard-quizzer-cli
 
 # 2. Create and activate a virtual environment
 python -m venv venv
@@ -83,23 +92,31 @@ python main.py --file path/to/my_deck.json --mode random
 ```
 Loaded 60 card(s) — mode: adaptive
 
-Card 1/60
-Q: EC2
-Your answer: elastic compute cloud
-✓ Correct! (Amazon Elastic Compute Cloud)
+Card: EC2
+Your answer: amazon elastic compute cloud
+✓ Correct!
 
-Card 2/60
-Q: S3
+Card: S3
 Your answer: storage
-✗ Incorrect. Answer: Amazon Simple Storage Service
+✗ Incorrect. The correct answer is: Amazon Simple Storage Service
 
 ...
 
-─────────────── Session Summary ───────────────
-Total attempted : 60
-Correct         : 47
-Accuracy        : 78.3 %
+========================================
+         SESSION SUMMARY
+========================================
+  Total Questions : 60
+  Correct         : 47
+  Accuracy        : 78%
+----------------------------------------
+  Missed Terms:
+    - S3
+========================================
+
+Play another round? (y/n): y
 ```
+
+In `--mode adaptive`, choosing to play another round immediately prioritizes previously missed terms (such as `S3`) at the top of the deck.
 
 Press `Ctrl+C` at any time to end the session early — your partial stats are still displayed.
 
@@ -241,7 +258,15 @@ starter/
 │   ├── test_loader.py
 │   └── test_display.py
 ├── docs/
-│   └── Architect.md            # Full architecture and design reference
+│   ├── Architect.md            # Full architecture and design reference
+│   ├── report_template.md      # Final AI-assisted development report
+│   ├── implementation_report.md# Module-by-module implementation report
+│   ├── architectural_review.md # Architectural code review audit
+│   ├── risk_assessment.md      # Holistic risk assessment
+│   ├── refactoring_audit.md    # Refactoring audit and checklist validations
+│   ├── risk_mitigation_audit.md# Risk mitigation verification audit
+│   ├── design_patterns.md      # Design patterns guide
+│   └── ai_edit_log.md          # AI interaction and prompt log
 ├── requirements.txt
 └── README.md
 ```
